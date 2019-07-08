@@ -1,21 +1,43 @@
 <template>
 	<div class="card">
 		<div class="card-body">
-			<p><strong>County Name: </strong>{{ mentor.county }}</p>
+			<p>
+				<strong>County Name: </strong>
+				<span v-if="!searchable">{{ mentor.county }}</span>
+				<b-select :options="counties" v-else></b-select>
+			</p>
 
 			<center><h4>ETAT + TOT MENTORSHIP WORKPLAN</h4></center>
 
 			<table class="table table-bordered">
 				<tr>
-					<td><b>Health Facility Name (Mentorship Venue):</b> {{ mentor.facility_name }}</td>
 					<td>
-						<b>Mentorship Period</b>: <select name = "month"><option>June</option></select><select name="year"><option>2019</option></select>
+						<b>Mentor Name: </b>
+						<span v-if="!searchable">{{ mentor.hcw_name }}</span>
+						<b-select :options="mentorsList" v-else></b-select>
+					</td>
+					<td>
+						<b>Mentorship Period</b>
+						<div class="row">
+							<div class="col-md">
+								<b-select v-model="selectedMonth">
+									<template slot="first">
+										<option :value="null" disabled>Select Month</option>
+									</template>
+								</b-select>
+							</div>
+							<div class="col-md">
+								<b-select v-model="selectedYear">
+									<template slot="first">
+										<option :value="null" disabled>Select Year</option>
+									</template>
+								</b-select>
+							</div>
+						</div>
 					</td>
 				</tr>
 				<tr>
-					<td>
-						<b>Mentor Name: </b>{{ mentor.hcw_name }}
-					</td>
+					<td><b>Health Facility Name (Mentorship Venue):</b> {{ mentor.facility_name }}</td>
 					<td>
 						<b>Mentor Workstation: </b>{{ mentor.facility_name }}
 					</td>
@@ -87,13 +109,45 @@
 		data() {
 			return {
 				mentor: {},
+				selectedMonth: null,
+				selectedYear: null,
+				id: this.$route.params.id,
 				sites: [
 				"Labor Ward", "Paedriatic Ward", "MCH", "New Born Unit"
 				],
 				cadre: ["Nurses", "Clinical Officers", "Students"],
 				cases: ["Asphyria", "Meconium", "Dehydration", "Severe Pneumonia", "Malnutrition", "Asthma", "Diarrheal Diseases"],
 				skills: ["Newborn Resuscitation", "Oxygen Administration for Neonatals", "Triage for Sick Children"],
-				resources: ["Pulse Oximeters", "Thermometers", "Emergency Tray", "Paediatric Protocols"]
+				resources: ["Pulse Oximeters", "Thermometers", "Emergency Tray", "Paediatric Protocols"],
+				counties: []
+			}
+		},
+		created(){
+			this.getCounties()
+		},
+		methods: {
+			getCounties: function(){
+				axios.get('/api/data/counties')
+				.then(res => {
+					this.counties = _.map(res.data, (county) => {
+						return {
+							value: county.id,
+							text: county.county
+						}
+					})
+				})
+			}
+		},
+		computed: {
+			searchable: function(){
+				if (this.id !== undefined) {
+					return false
+				}
+
+				return true
+			},
+			mentorsList: function(){
+				return []
 			}
 		}
 	}

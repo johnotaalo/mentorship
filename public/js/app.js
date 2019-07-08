@@ -2412,16 +2412,71 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       mentor: {},
+      selectedMonth: null,
+      selectedYear: null,
+      id: this.$route.params.id,
       sites: ["Labor Ward", "Paedriatic Ward", "MCH", "New Born Unit"],
       cadre: ["Nurses", "Clinical Officers", "Students"],
       cases: ["Asphyria", "Meconium", "Dehydration", "Severe Pneumonia", "Malnutrition", "Asthma", "Diarrheal Diseases"],
       skills: ["Newborn Resuscitation", "Oxygen Administration for Neonatals", "Triage for Sick Children"],
-      resources: ["Pulse Oximeters", "Thermometers", "Emergency Tray", "Paediatric Protocols"]
+      resources: ["Pulse Oximeters", "Thermometers", "Emergency Tray", "Paediatric Protocols"],
+      counties: []
     };
+  },
+  created: function created() {
+    this.getCounties();
+  },
+  methods: {
+    getCounties: function getCounties() {
+      var _this = this;
+
+      axios.get('/api/data/counties').then(function (res) {
+        _this.counties = _.map(res.data, function (county) {
+          return {
+            value: county.id,
+            text: county.county
+          };
+        });
+      });
+    }
+  },
+  computed: {
+    searchable: function searchable() {
+      if (this.id !== undefined) {
+        return false;
+      }
+
+      return true;
+    },
+    mentorsList: function mentorsList() {
+      return [];
+    }
   }
 });
 
@@ -74679,13 +74734,76 @@ var render = function() {
                 }),
                 _vm._v(" "),
                 _c("span", { staticClass: "align-middle" }, [
-                  _vm._v("HCW List")
+                  _vm._v("Mentor List")
                 ])
               ]
             )
           ],
           1
         ),
+        _vm._v(" "),
+        _c("li", { staticClass: "sidebar-item" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "ul",
+            {
+              staticClass: "sidebar-dropdown list-unstyled collapse",
+              attrs: { id: "workplans" }
+            },
+            [
+              _c(
+                "li",
+                { staticClass: "sidebar-item" },
+                [
+                  _c(
+                    "router-link",
+                    {
+                      staticClass: "sidebar-link",
+                      attrs: { to: { name: "dashboard.workplans.add" } }
+                    },
+                    [
+                      _c("i", {
+                        staticClass: "align-middle",
+                        attrs: { "data-feather": "plus" }
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "align-middle" }, [
+                        _vm._v("Add Workplan")
+                      ])
+                    ]
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "li",
+                { staticClass: "sidebar-item" },
+                [
+                  _c(
+                    "router-link",
+                    {
+                      staticClass: "sidebar-link",
+                      attrs: { to: { name: "dashboard.workplans" } }
+                    },
+                    [
+                      _c("i", {
+                        staticClass: "align-middle",
+                        attrs: { "data-feather": "file" }
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "align-middle" }, [
+                        _vm._v("Workplans")
+                      ])
+                    ]
+                  )
+                ],
+                1
+              )
+            ]
+          )
+        ]),
         _vm._v(" "),
         _c(
           "li",
@@ -74713,11 +74831,31 @@ var render = function() {
         )
       ]),
       _vm._v(" "),
-      _vm._m(0)
+      _vm._m(1)
     ])
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        staticClass: "sidebar-link collapsed",
+        attrs: { href: "#workplans", "data-toggle": "collapse" }
+      },
+      [
+        _c("i", {
+          staticClass: "align-middle",
+          attrs: { "data-feather": "book" }
+        }),
+        _vm._v(" "),
+        _c("span", { staticClass: "align-middle" }, [_vm._v("Workplans")])
+      ]
+    )
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -75042,27 +75180,111 @@ var render = function() {
       "div",
       { staticClass: "card-body" },
       [
-        _c("p", [
-          _c("strong", [_vm._v("County Name: ")]),
-          _vm._v(_vm._s(_vm.mentor.county))
-        ]),
+        _c(
+          "p",
+          [
+            _c("strong", [_vm._v("County Name: ")]),
+            _vm._v(" "),
+            !_vm.searchable
+              ? _c("span", [_vm._v(_vm._s(_vm.mentor.county))])
+              : _c("b-select", { attrs: { options: _vm.counties } })
+          ],
+          1
+        ),
         _vm._v(" "),
         _c("center", [_c("h4", [_vm._v("ETAT + TOT MENTORSHIP WORKPLAN")])]),
         _vm._v(" "),
         _c("table", { staticClass: "table table-bordered" }, [
           _c("tr", [
-            _c("td", [
-              _c("b", [_vm._v("Health Facility Name (Mentorship Venue):")]),
-              _vm._v(" " + _vm._s(_vm.mentor.facility_name))
-            ]),
+            _c(
+              "td",
+              [
+                _c("b", [_vm._v("Mentor Name: ")]),
+                _vm._v(" "),
+                !_vm.searchable
+                  ? _c("span", [_vm._v(_vm._s(_vm.mentor.hcw_name))])
+                  : _c("b-select", { attrs: { options: _vm.mentorsList } })
+              ],
+              1
+            ),
             _vm._v(" "),
-            _vm._m(0)
+            _c("td", [
+              _c("b", [_vm._v("Mentorship Period")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "row" }, [
+                _c(
+                  "div",
+                  { staticClass: "col-md" },
+                  [
+                    _c(
+                      "b-select",
+                      {
+                        model: {
+                          value: _vm.selectedMonth,
+                          callback: function($$v) {
+                            _vm.selectedMonth = $$v
+                          },
+                          expression: "selectedMonth"
+                        }
+                      },
+                      [
+                        _c("template", { slot: "first" }, [
+                          _c(
+                            "option",
+                            {
+                              attrs: { disabled: "" },
+                              domProps: { value: null }
+                            },
+                            [_vm._v("Select Month")]
+                          )
+                        ])
+                      ],
+                      2
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-md" },
+                  [
+                    _c(
+                      "b-select",
+                      {
+                        model: {
+                          value: _vm.selectedYear,
+                          callback: function($$v) {
+                            _vm.selectedYear = $$v
+                          },
+                          expression: "selectedYear"
+                        }
+                      },
+                      [
+                        _c("template", { slot: "first" }, [
+                          _c(
+                            "option",
+                            {
+                              attrs: { disabled: "" },
+                              domProps: { value: null }
+                            },
+                            [_vm._v("Select Year")]
+                          )
+                        ])
+                      ],
+                      2
+                    )
+                  ],
+                  1
+                )
+              ])
+            ])
           ]),
           _vm._v(" "),
           _c("tr", [
             _c("td", [
-              _c("b", [_vm._v("Mentor Name: ")]),
-              _vm._v(_vm._s(_vm.mentor.hcw_name) + "\n\t\t\t\t")
+              _c("b", [_vm._v("Health Facility Name (Mentorship Venue):")]),
+              _vm._v(" " + _vm._s(_vm.mentor.facility_name))
             ]),
             _vm._v(" "),
             _c("td", [
@@ -75085,7 +75307,7 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("table", { staticClass: "table table-bordered" }, [
-          _vm._m(1),
+          _vm._m(0),
           _vm._v(" "),
           _c("tbody", [
             _c("tr", [
@@ -75141,21 +75363,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("b", [_vm._v("Mentorship Period")]),
-      _vm._v(": "),
-      _c("select", { attrs: { name: "month" } }, [
-        _c("option", [_vm._v("June")])
-      ]),
-      _c("select", { attrs: { name: "year" } }, [
-        _c("option", [_vm._v("2019")])
-      ])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -96283,7 +96490,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_dashboard_Home__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pages/dashboard/Home */ "./resources/js/pages/dashboard/Home.vue");
 /* harmony import */ var _pages_dashboard_HCWList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pages/dashboard/HCWList */ "./resources/js/pages/dashboard/HCWList.vue");
 /* harmony import */ var _pages_dashboard_WorkPlans__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pages/dashboard/WorkPlans */ "./resources/js/pages/dashboard/WorkPlans.vue");
-/* harmony import */ var _pages_dashboard_WorkPlansAdd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./pages/dashboard/WorkPlansAdd */ "./resources/js/pages/dashboard/WorkPlansAdd.vue");
+/* harmony import */ var _pages_dashboard_WorkPlansAdd__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./pages/dashboard/WorkPlansAdd */ "./resources/js/pages/dashboard/WorkPlansAdd.vue");
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
@@ -96314,8 +96521,8 @@ var routes = [{
   }
 }, {
   name: 'dashboard.workplans.add',
-  path: '/workplans/add',
-  component: _pages_dashboard_WorkPlansAdd__WEBPACK_IMPORTED_MODULE_6__["default"],
+  path: '/workplans/add/:id?',
+  component: _pages_dashboard_WorkPlansAdd__WEBPACK_IMPORTED_MODULE_5__["default"],
   meta: {
     title: 'Add Work Plan'
   }
@@ -96356,8 +96563,8 @@ router.beforeEach(function (to, from, next) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\CHRIS\development\vagrant\code2\mentorship-dashboard\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\CHRIS\development\vagrant\code2\mentorship-dashboard\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\mentorship\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\mentorship\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -31,7 +31,7 @@ let routes = [{
 		}
 	},{
 		name: 'dashboard.workplans.add',
-		path: '/workplans/add',
+		path: '/workplans/add/:id?',
 		component: WorkPlansAdd,
 		meta: {
 			title: 'Add Work Plan'
