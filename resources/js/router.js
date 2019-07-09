@@ -7,6 +7,7 @@ import DashboardHome from './pages/dashboard/Home'
 import HCWList from './pages/dashboard/HCWList'
 import WorkPlans from './pages/dashboard/WorkPlans'
 import WorkPlansAdd from './pages/dashboard/WorkPlansAdd'
+import WorkPlansView from './pages/dashboard/WorkPlansView'
 
 let routes = [{
 		name: 'dashboard.index',
@@ -35,6 +36,13 @@ let routes = [{
 		component: WorkPlansAdd,
 		meta: {
 			title: 'Add Work Plan'
+		}
+	},{
+		name: 'dashboard.workplans.view',
+		path: '/workplans/view/:id',
+		component: WorkPlansView,
+		meta: {
+			title: 'View Work Plan'
 		}
 	}
 ];

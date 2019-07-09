@@ -7,6 +7,8 @@
 require('./bootstrap');
 
 import router from './router'
+import appEvent from './core/AppEvent'
+import vSelect from 'vue-select'
 
 
 /**
@@ -24,6 +26,8 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('top-bar', require('./components/menus/TopBar.vue').default)
 Vue.component('side-bar', require('./components/menus/SideBar.vue').default)
 Vue.component('app', require('./pages/App.vue').default)
+
+Vue.component('v-select', vSelect)
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
