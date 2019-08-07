@@ -44,15 +44,16 @@
 					<td colspan="2">
 						<b>Mentor Name: </b>
 						<span v-if="!searchable">{{ mentor.hcw_name }}</span>
-						<b-select v-model="mentor" :options="mentors" v-else></b-select>
+						<!-- <b-select v-model="mentor" :options="mentors" v-else></b-select> -->
+						<v-select v-model="mentor" :options="mentors" placeholder="Click to Enter" v-else></v-select>
 					</td>
 					<td>
 						<b>Mentor Contact Number: </b>
-						<b-input v-model = "mentor.phone" placeholder="Info Not Provided"></b-input>
+						<b-input v-model = "mentor.value.phone" placeholder="Info Not Provided (Click to Enter)"></b-input>
 					</td>
 					<td>
 						<b>Mentor Email Address: </b>
-						<b-input v-model = "mentor.email" placeholder="Info Not Provided"></b-input>
+						<b-input v-model = "mentor.value.email" placeholder="Info Not Provided (Click to Enter)"></b-input>
 					</td>
 				</tr>
 				<tr>
@@ -216,7 +217,9 @@
 		mixins: [rowForm],
 		data() {
 			return {
-				mentor: {},
+				mentor: {
+					value: ""
+				},
 				mentors: [],
 				selectedMonth: null,
 				selectedYear: null,
@@ -260,7 +263,7 @@
 					this.mentors = _.map(res.data, (mentor) => {
 						return {
 							value: mentor,
-							text: mentor.name
+							label: mentor.name
 						}
 					})
 				});

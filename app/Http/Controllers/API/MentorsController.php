@@ -46,6 +46,6 @@ class MentorsController extends Controller
     }
 
     function getData(){
-        return \App\Mentor::get();
+        return \App\Mentor::orderBy('name', 'ASC')->get();
     }
 }

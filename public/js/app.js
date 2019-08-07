@@ -2713,6 +2713,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -2725,7 +2726,9 @@ __webpack_require__.r(__webpack_exports__);
   mixins: [_mixins_rowForm__WEBPACK_IMPORTED_MODULE_2__["default"]],
   data: function data() {
     return {
-      mentor: {},
+      mentor: {
+        value: ""
+      },
       mentors: [],
       selectedMonth: null,
       selectedYear: null,
@@ -2768,7 +2771,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.mentors = _.map(res.data, function (mentor) {
           return {
             value: mentor,
-            text: mentor.name
+            label: mentor.name
           };
         });
       });
@@ -76051,8 +76054,11 @@ var render = function() {
                   _vm._v(" "),
                   !_vm.searchable
                     ? _c("span", [_vm._v(_vm._s(_vm.mentor.hcw_name))])
-                    : _c("b-select", {
-                        attrs: { options: _vm.mentors },
+                    : _c("v-select", {
+                        attrs: {
+                          options: _vm.mentors,
+                          placeholder: "Click to Enter"
+                        },
                         model: {
                           value: _vm.mentor,
                           callback: function($$v) {
@@ -76071,13 +76077,15 @@ var render = function() {
                   _c("b", [_vm._v("Mentor Contact Number: ")]),
                   _vm._v(" "),
                   _c("b-input", {
-                    attrs: { placeholder: "Info Not Provided" },
+                    attrs: {
+                      placeholder: "Info Not Provided (Click to Enter)"
+                    },
                     model: {
-                      value: _vm.mentor.phone,
+                      value: _vm.mentor.value.phone,
                       callback: function($$v) {
-                        _vm.$set(_vm.mentor, "phone", $$v)
+                        _vm.$set(_vm.mentor.value, "phone", $$v)
                       },
-                      expression: "mentor.phone"
+                      expression: "mentor.value.phone"
                     }
                   })
                 ],
@@ -76090,13 +76098,15 @@ var render = function() {
                   _c("b", [_vm._v("Mentor Email Address: ")]),
                   _vm._v(" "),
                   _c("b-input", {
-                    attrs: { placeholder: "Info Not Provided" },
+                    attrs: {
+                      placeholder: "Info Not Provided (Click to Enter)"
+                    },
                     model: {
-                      value: _vm.mentor.email,
+                      value: _vm.mentor.value.email,
                       callback: function($$v) {
-                        _vm.$set(_vm.mentor, "email", $$v)
+                        _vm.$set(_vm.mentor.value, "email", $$v)
                       },
-                      expression: "mentor.email"
+                      expression: "mentor.value.email"
                     }
                   })
                 ],
