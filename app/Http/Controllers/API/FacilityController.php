@@ -11,9 +11,9 @@ class FacilityController extends Controller
     	$county_id = (isset($request->county_id)) ? $request->county_id : null;
 
     	if ($county_id != null) {
-    		$facilities = \App\Facility::where('county_id', $county_id)->get();
+    		$facilities = \App\Facility::where('county_id', $county_id)->orderBy('facility_name', 'ASC')->get();
     	}else{
-    		$facilities = \App\Facility::get();
+    		$facilities = \App\Facility::orderBy('facility_name', 'ASC')->get();
     	}
 
     	return $facilities;
