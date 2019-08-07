@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCountiesTable extends Migration
+class CreateFacilitiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,14 @@ class CreateCountiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('counties', function (Blueprint $table) {
+        Schema::create('facilities', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('county');
-            $table->integer('cto_id')->nullable();
+            $table->integer('county_id');
+            $table->integer('sub_county_id');
+            $table->integer('survey_cto_id');
+            $table->string('facility_type');
+            $table->string('facility_name');
+            $table->string('status');
             $table->timestamps();
         });
     }
@@ -28,6 +32,6 @@ class CreateCountiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('counties');
+        Schema::dropIfExists('facilities');
     }
 }

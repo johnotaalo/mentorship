@@ -20,4 +20,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::prefix('data')->group(function(){
 	Route::get('mentors', 'API\MentorsController@get');
 	Route::get('counties', 'API\CountyController@get');
+	Route::get('facilities/{county_id?}', 'API\FacilityController@get');
 });

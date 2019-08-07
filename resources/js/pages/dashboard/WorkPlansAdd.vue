@@ -5,7 +5,7 @@
 			<p>
 				<strong>County Name: </strong>
 				<span v-if="!searchable">{{ mentor.county }}</span>
-				<b-select :options="counties" v-else></b-select>
+				<b-select v-model="form.county" :options="counties" v-else></b-select>
 			</p>
 
 			<table class="table table-bordered">
@@ -36,9 +36,9 @@
 					</td>
 				</tr>
 				<tr>
-					<td><b>Health Facility Name (Mentorship Venue):</b> <b-select></b-select></td>
+					<td><b>Health Facility Name (Mentorship Venue):</b> <b-select :options="facilities" v-model = "form.facility"></b-select></td>
 					<td>
-						<b>Mentor Workstation: </b>{{ mentor.facility_name }}
+						<b>Mentor Workstation: </b><b-select :options="facilities" v-model = "form.workstation"></b-select>
 					</td>
 				</tr>
 				<tr>
@@ -212,8 +212,12 @@
 				skills: ["Newborn Resuscitation", "Oxygen Administration for Neonatals", "Triage for Sick Children"],
 				resources: ["Pulse Oximeters", "Thermometers", "Emergency Tray", "Paediatric Protocols"],
 				counties: [],
+				facilities: [],
 				form: new Form({
-					activities: []
+					activities: [],
+					facility: '',
+					county: '',
+					workstation: ''
 				}),
 				modal: {
 					site: "",
@@ -235,11 +239,23 @@
 				.then(res => {
 					this.counties = _.map(res.data, (county) => {
 						return {
-							value: county.id,
+							value: county.cto_id,
 							text: county.county
 						}
 					})
 				})
+			},
+
+			getFacilities(county_id){
+				axios.get(`/api/data/facilities/${county_id}`)
+				.then(res => {
+					this.facilities = _.map(res.data, (facility) => {
+						return {
+							value: facility.id,
+							text: facility.facility_name
+						}
+					})
+				});
 			},
 			showAddActivityModal: function(){
 				this.$refs['modal-add-activity'].show()
@@ -267,6 +283,11 @@
 			},
 			mentorsList: function(){
 				return []
+			}
+		},
+		watch: {
+			'form.county': function(county){
+				this.getFacilities(county)
 			}
 		}
 	}

@@ -2719,8 +2719,12 @@ __webpack_require__.r(__webpack_exports__);
       skills: ["Newborn Resuscitation", "Oxygen Administration for Neonatals", "Triage for Sick Children"],
       resources: ["Pulse Oximeters", "Thermometers", "Emergency Tray", "Paediatric Protocols"],
       counties: [],
+      facilities: [],
       form: new _core_Form__WEBPACK_IMPORTED_MODULE_3__["default"]({
-        activities: []
+        activities: [],
+        facility: '',
+        county: '',
+        workstation: ''
       }),
       modal: {
         site: "",
@@ -2743,8 +2747,20 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('/api/data/counties').then(function (res) {
         _this.counties = _.map(res.data, function (county) {
           return {
-            value: county.id,
+            value: county.cto_id,
             text: county.county
+          };
+        });
+      });
+    },
+    getFacilities: function getFacilities(county_id) {
+      var _this2 = this;
+
+      axios.get("/api/data/facilities/".concat(county_id)).then(function (res) {
+        _this2.facilities = _.map(res.data, function (facility) {
+          return {
+            value: facility.id,
+            text: facility.facility_name
           };
         });
       });
@@ -2753,7 +2769,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$refs['modal-add-activity'].show();
     },
     manageModalData: function manageModalData() {
-      var _this2 = this;
+      var _this3 = this;
 
       var data = {};
       this.form.activities.push(data);
@@ -2762,9 +2778,9 @@ __webpack_require__.r(__webpack_exports__);
         data[key] = value;
 
         if (Array.isArray(value)) {
-          _this2.modal[key] = [];
+          _this3.modal[key] = [];
         } else {
-          _this2.modal[key] = "";
+          _this3.modal[key] = "";
         }
       });
     }
@@ -2779,6 +2795,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     mentorsList: function mentorsList() {
       return [];
+    }
+  },
+  watch: {
+    'form.county': function formCounty(county) {
+      this.getFacilities(county);
     }
   }
 });
@@ -22442,7 +22463,7 @@ var VBTooltip = {
 /*!*************************************************!*\
   !*** ./node_modules/bootstrap-vue/esm/index.js ***!
   \*************************************************/
-/*! exports provided: BVConfigPlugin, BVConfig, BootstrapVue, install, setConfig, default, componentsPlugin, BVModalPlugin, BVToastPlugin, AlertPlugin, BAlert, BadgePlugin, BBadge, BreadcrumbPlugin, BBreadcrumb, BBreadcrumbItem, ButtonPlugin, BButton, BButtonClose, ButtonGroupPlugin, BButtonGroup, ButtonToolbarPlugin, BButtonToolbar, CardPlugin, BCard, BCardBody, BCardFooter, BCardGroup, BCardHeader, BCardImg, BCardImgLazy, BCardSubTitle, BCardText, BCardTitle, CarouselPlugin, BCarousel, BCarouselSlide, CollapsePlugin, BCollapse, DropdownPlugin, BDropdown, BDropdownItem, BDropdownItemButton, BDropdownDivider, BDropdownForm, BDropdownGroup, BDropdownHeader, BDropdownText, EmbedPlugin, BEmbed, FormPlugin, BForm, BFormDatalist, BFormText, BFormInvalidFeedback, BFormValidFeedback, FormCheckboxPlugin, BFormCheckbox, BFormCheckboxGroup, FormFilePlugin, BFormFile, FormGroupPlugin, BFormGroup, FormInputPlugin, BFormInput, FormRadioPlugin, BFormRadio, BFormRadioGroup, FormSelectPlugin, BFormSelect, FormTextareaPlugin, BFormTextarea, ImagePlugin, BImg, BImgLazy, InputGroupPlugin, BInputGroup, BInputGroupAddon, BInputGroupAppend, BInputGroupPrepend, BInputGroupText, JumbotronPlugin, BJumbotron, LayoutPlugin, BContainer, BRow, BCol, BFormRow, LinkPlugin, BLink, ListGroupPlugin, BListGroup, BListGroupItem, MediaPlugin, BMedia, BMediaAside, BMediaBody, ModalPlugin, BModal, NavPlugin, BNav, BNavForm, BNavItem, BNavItemDropdown, BNavText, NavbarPlugin, BNavbar, BNavbarBrand, BNavbarNav, BNavbarToggle, PaginationPlugin, BPagination, PaginationNavPlugin, BPaginationNav, PopoverPlugin, BPopover, ProgressPlugin, BProgress, BProgressBar, SpinnerPlugin, BSpinner, TablePlugin, BTable, BTableLite, TabsPlugin, BTabs, BTab, ToastPlugin, BToast, BToaster, TooltipPlugin, BTooltip, directivesPlugin, VBModalPlugin, VBModal, VBPopoverPlugin, VBPopover, VBScrollspyPlugin, VBScrollspy, VBTogglePlugin, VBToggle, VBTooltipPlugin, VBTooltip */
+/*! exports provided: componentsPlugin, BVModalPlugin, BVToastPlugin, AlertPlugin, BAlert, BadgePlugin, BBadge, BreadcrumbPlugin, BBreadcrumb, BBreadcrumbItem, ButtonPlugin, BButton, BButtonClose, ButtonGroupPlugin, BButtonGroup, ButtonToolbarPlugin, BButtonToolbar, CardPlugin, BCard, BCardBody, BCardFooter, BCardGroup, BCardHeader, BCardImg, BCardImgLazy, BCardSubTitle, BCardText, BCardTitle, CarouselPlugin, BCarousel, BCarouselSlide, CollapsePlugin, BCollapse, DropdownPlugin, BDropdown, BDropdownItem, BDropdownItemButton, BDropdownDivider, BDropdownForm, BDropdownGroup, BDropdownHeader, BDropdownText, EmbedPlugin, BEmbed, FormPlugin, BForm, BFormDatalist, BFormText, BFormInvalidFeedback, BFormValidFeedback, FormCheckboxPlugin, BFormCheckbox, BFormCheckboxGroup, FormFilePlugin, BFormFile, FormGroupPlugin, BFormGroup, FormInputPlugin, BFormInput, FormRadioPlugin, BFormRadio, BFormRadioGroup, FormSelectPlugin, BFormSelect, FormTextareaPlugin, BFormTextarea, ImagePlugin, BImg, BImgLazy, InputGroupPlugin, BInputGroup, BInputGroupAddon, BInputGroupAppend, BInputGroupPrepend, BInputGroupText, JumbotronPlugin, BJumbotron, LayoutPlugin, BContainer, BRow, BCol, BFormRow, LinkPlugin, BLink, ListGroupPlugin, BListGroup, BListGroupItem, MediaPlugin, BMedia, BMediaAside, BMediaBody, ModalPlugin, BModal, NavPlugin, BNav, BNavForm, BNavItem, BNavItemDropdown, BNavText, NavbarPlugin, BNavbar, BNavbarBrand, BNavbarNav, BNavbarToggle, PaginationPlugin, BPagination, PaginationNavPlugin, BPaginationNav, PopoverPlugin, BPopover, ProgressPlugin, BProgress, BProgressBar, SpinnerPlugin, BSpinner, TablePlugin, BTable, BTableLite, TabsPlugin, BTabs, BTab, ToastPlugin, BToast, BToaster, TooltipPlugin, BTooltip, directivesPlugin, VBModalPlugin, VBModal, VBPopoverPlugin, VBPopover, VBScrollspyPlugin, VBScrollspy, VBTogglePlugin, VBToggle, VBTooltipPlugin, VBTooltip, BVConfigPlugin, BVConfig, BootstrapVue, install, setConfig, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -75868,7 +75889,16 @@ var render = function() {
               _vm._v(" "),
               !_vm.searchable
                 ? _c("span", [_vm._v(_vm._s(_vm.mentor.county))])
-                : _c("b-select", { attrs: { options: _vm.counties } })
+                : _c("b-select", {
+                    attrs: { options: _vm.counties },
+                    model: {
+                      value: _vm.form.county,
+                      callback: function($$v) {
+                        _vm.$set(_vm.form, "county", $$v)
+                      },
+                      expression: "form.county"
+                    }
+                  })
             ],
             1
           ),
@@ -75983,15 +76013,37 @@ var render = function() {
                 [
                   _c("b", [_vm._v("Health Facility Name (Mentorship Venue):")]),
                   _vm._v(" "),
-                  _c("b-select")
+                  _c("b-select", {
+                    attrs: { options: _vm.facilities },
+                    model: {
+                      value: _vm.form.facility,
+                      callback: function($$v) {
+                        _vm.$set(_vm.form, "facility", $$v)
+                      },
+                      expression: "form.facility"
+                    }
+                  })
                 ],
                 1
               ),
               _vm._v(" "),
-              _c("td", [
-                _c("b", [_vm._v("Mentor Workstation: ")]),
-                _vm._v(_vm._s(_vm.mentor.facility_name) + "\n\t\t\t\t")
-              ])
+              _c(
+                "td",
+                [
+                  _c("b", [_vm._v("Mentor Workstation: ")]),
+                  _c("b-select", {
+                    attrs: { options: _vm.facilities },
+                    model: {
+                      value: _vm.form.workstation,
+                      callback: function($$v) {
+                        _vm.$set(_vm.form, "workstation", $$v)
+                      },
+                      expression: "form.workstation"
+                    }
+                  })
+                ],
+                1
+              )
             ]),
             _vm._v(" "),
             _c("tr", [
@@ -98367,8 +98419,8 @@ router.beforeEach(function (to, from, next) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/mentorship/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/mentorship/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\mentorship\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\mentorship\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
