@@ -14,6 +14,6 @@ class CountyController extends Controller
     }
 
     function getSubCounties(Request $request){
-    	return \App\Subcounty::where('county_id', $request->county_id)->orderBy('county', 'ASC')->get();
+    	return \App\Subcounty::where('county_id', $request->county_id)->orderBy('subcounty', 'ASC')->get();
     }
 }
