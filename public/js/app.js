@@ -2374,7 +2374,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       table: {
-        columns: ['name', 'county', 'mobile_number', 'actions'],
+        columns: ['name', 'email', 'phone', 'actions'],
         options: {}
       }
     };
@@ -2697,6 +2697,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2710,6 +2726,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       mentor: {},
+      mentors: [],
       selectedMonth: null,
       selectedYear: null,
       id: this.$route.params.id,
@@ -2720,10 +2737,12 @@ __webpack_require__.r(__webpack_exports__);
       resources: ["Pulse Oximeters", "Thermometers", "Emergency Tray", "Paediatric Protocols"],
       counties: [],
       facilities: [],
+      subcounties: [],
       form: new _core_Form__WEBPACK_IMPORTED_MODULE_3__["default"]({
         activities: [],
         facility: '',
         county: '',
+        subcounty: '',
         workstation: ''
       }),
       modal: {
@@ -2739,13 +2758,26 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     this.getCounties();
+    this.getMentors();
   },
   methods: {
-    getCounties: function getCounties() {
+    getMentors: function getMentors() {
       var _this = this;
 
+      axios.get('/api/data/mentors-data').then(function (res) {
+        _this.mentors = _.map(res.data, function (mentor) {
+          return {
+            value: mentor,
+            text: mentor.name
+          };
+        });
+      });
+    },
+    getCounties: function getCounties() {
+      var _this2 = this;
+
       axios.get('/api/data/counties').then(function (res) {
-        _this.counties = _.map(res.data, function (county) {
+        _this2.counties = _.map(res.data, function (county) {
           return {
             value: county.cto_id,
             text: county.county
@@ -2754,13 +2786,25 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     getFacilities: function getFacilities(county_id) {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get("/api/data/facilities/".concat(county_id)).then(function (res) {
-        _this2.facilities = _.map(res.data, function (facility) {
+        _this3.facilities = _.map(res.data, function (facility) {
           return {
             value: facility.id,
             text: facility.facility_name
+          };
+        });
+      });
+    },
+    getSubcounties: function getSubcounties(county_id) {
+      var _this4 = this;
+
+      axios.get("/api/data/subcounties/".concat(county_id)).then(function (res) {
+        _this4.subcounties = _.map(res.data, function (subcounty) {
+          return {
+            value: subcounty.subcounty_id,
+            text: subcounty.subcounty
           };
         });
       });
@@ -2769,7 +2813,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$refs['modal-add-activity'].show();
     },
     manageModalData: function manageModalData() {
-      var _this3 = this;
+      var _this5 = this;
 
       var data = {};
       this.form.activities.push(data);
@@ -2778,9 +2822,9 @@ __webpack_require__.r(__webpack_exports__);
         data[key] = value;
 
         if (Array.isArray(value)) {
-          _this3.modal[key] = [];
+          _this5.modal[key] = [];
         } else {
-          _this3.modal[key] = "";
+          _this5.modal[key] = "";
         }
       });
     }
@@ -2799,7 +2843,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   watch: {
     'form.county': function formCounty(county) {
-      this.getFacilities(county);
+      this.getSubcounties(county); // this.getFacilities(county)
+    },
+    'form.subcounty': function formSubcounty(subcounty) {
+      this.getFacilities(subcounty);
     }
   }
 });
@@ -75352,31 +75399,6 @@ var render = function() {
           _vm._v("\n\t\t\t\t\t\tMain\n\t\t\t\t\t")
         ]),
         _vm._v(" "),
-        _c(
-          "li",
-          { staticClass: "sidebar-item" },
-          [
-            _c(
-              "router-link",
-              {
-                staticClass: "sidebar-link",
-                attrs: { to: { name: "dashboard.hcwlist" } }
-              },
-              [
-                _c("i", {
-                  staticClass: "align-middle",
-                  attrs: { "data-feather": "users" }
-                }),
-                _vm._v(" "),
-                _c("span", { staticClass: "align-middle" }, [
-                  _vm._v("Mentor List")
-                ])
-              ]
-            )
-          ],
-          1
-        ),
-        _vm._v(" "),
         _c("li", { staticClass: "sidebar-item" }, [
           _vm._m(0),
           _vm._v(" "),
@@ -75429,7 +75451,7 @@ var render = function() {
                       }),
                       _vm._v(" "),
                       _c("span", { staticClass: "align-middle" }, [
-                        _vm._v("Workplans")
+                        _vm._v("View Workplans")
                       ])
                     ]
                   )
@@ -75694,7 +75716,7 @@ var render = function() {
                         return [
                           _vm._v(
                             "\n\t\t\t\t\t\t\t" +
-                              _vm._s(data.row.hcw_name) +
+                              _vm._s(data.row.name) +
                               "\n\t\t\t\t\t\t"
                           )
                         ]
@@ -75882,134 +75904,210 @@ var render = function() {
             _c("h4", [_c("strong", [_vm._v("ETAT + TOT MENTORSHIP WORKPLAN")])])
           ]),
           _vm._v(" "),
-          _c(
-            "p",
-            [
-              _c("strong", [_vm._v("County Name: ")]),
+          _c("div", { staticClass: "row" }, [
+            _c(
+              "div",
+              { staticClass: "col-md" },
+              [
+                _c("strong", [_vm._v("County Name: ")]),
+                _vm._v(" "),
+                !_vm.searchable
+                  ? _c("span", [_vm._v(_vm._s(_vm.mentor.county))])
+                  : _c("b-select", {
+                      attrs: { options: _vm.counties },
+                      model: {
+                        value: _vm.form.county,
+                        callback: function($$v) {
+                          _vm.$set(_vm.form, "county", $$v)
+                        },
+                        expression: "form.county"
+                      }
+                    })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "col-md" },
+              [
+                _c("strong", [_vm._v("Sub County Name: ")]),
+                _vm._v(" "),
+                !_vm.searchable
+                  ? _c("span", [_vm._v(_vm._s(_vm.mentor.county))])
+                  : _c("b-select", {
+                      attrs: { options: _vm.subcounties },
+                      model: {
+                        value: _vm.form.subcounty,
+                        callback: function($$v) {
+                          _vm.$set(_vm.form, "subcounty", $$v)
+                        },
+                        expression: "form.subcounty"
+                      }
+                    })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md" }, [
+              _c("b", [_vm._v("Mentorship Period")]),
               _vm._v(" "),
-              !_vm.searchable
-                ? _c("span", [_vm._v(_vm._s(_vm.mentor.county))])
-                : _c("b-select", {
-                    attrs: { options: _vm.counties },
-                    model: {
-                      value: _vm.form.county,
-                      callback: function($$v) {
-                        _vm.$set(_vm.form, "county", $$v)
+              _c("div", { staticClass: "row" }, [
+                _c(
+                  "div",
+                  { staticClass: "col-md" },
+                  [
+                    _c(
+                      "b-select",
+                      {
+                        attrs: {
+                          options: [
+                            "January",
+                            "February",
+                            "March",
+                            "April",
+                            "May",
+                            "June",
+                            "July",
+                            "August",
+                            "September",
+                            "October",
+                            "November",
+                            "December"
+                          ]
+                        },
+                        model: {
+                          value: _vm.selectedMonth,
+                          callback: function($$v) {
+                            _vm.selectedMonth = $$v
+                          },
+                          expression: "selectedMonth"
+                        }
                       },
-                      expression: "form.county"
-                    }
-                  })
-            ],
-            1
-          ),
+                      [
+                        _c("template", { slot: "first" }, [
+                          _c(
+                            "option",
+                            {
+                              attrs: { disabled: "" },
+                              domProps: { value: null }
+                            },
+                            [_vm._v("Select Month")]
+                          )
+                        ])
+                      ],
+                      2
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-md" },
+                  [
+                    _c(
+                      "b-select",
+                      {
+                        attrs: { options: ["2018", "2019"] },
+                        model: {
+                          value: _vm.selectedYear,
+                          callback: function($$v) {
+                            _vm.selectedYear = $$v
+                          },
+                          expression: "selectedYear"
+                        }
+                      },
+                      [
+                        _c("template", { slot: "first" }, [
+                          _c(
+                            "option",
+                            {
+                              attrs: { disabled: "" },
+                              domProps: { value: null }
+                            },
+                            [_vm._v("Select Year")]
+                          )
+                        ])
+                      ],
+                      2
+                    )
+                  ],
+                  1
+                )
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("p"),
           _vm._v(" "),
           _c("table", { staticClass: "table table-bordered" }, [
             _c("tr", [
               _c(
                 "td",
+                { attrs: { colspan: "2" } },
                 [
                   _c("b", [_vm._v("Mentor Name: ")]),
                   _vm._v(" "),
                   !_vm.searchable
                     ? _c("span", [_vm._v(_vm._s(_vm.mentor.hcw_name))])
-                    : _c("b-select", { attrs: { options: _vm.mentorsList } })
+                    : _c("b-select", {
+                        attrs: { options: _vm.mentors },
+                        model: {
+                          value: _vm.mentor,
+                          callback: function($$v) {
+                            _vm.mentor = $$v
+                          },
+                          expression: "mentor"
+                        }
+                      })
                 ],
                 1
               ),
               _vm._v(" "),
-              _c("td", [
-                _c("b", [_vm._v("Mentorship Period")]),
-                _vm._v(" "),
-                _c("div", { staticClass: "row" }, [
-                  _c(
-                    "div",
-                    { staticClass: "col-md" },
-                    [
-                      _c(
-                        "b-select",
-                        {
-                          attrs: {
-                            options: [
-                              "January",
-                              "February",
-                              "March",
-                              "April",
-                              "May",
-                              "June",
-                              "July",
-                              "August",
-                              "September",
-                              "October",
-                              "November",
-                              "December"
-                            ]
-                          },
-                          model: {
-                            value: _vm.selectedMonth,
-                            callback: function($$v) {
-                              _vm.selectedMonth = $$v
-                            },
-                            expression: "selectedMonth"
-                          }
-                        },
-                        [
-                          _c("template", { slot: "first" }, [
-                            _c(
-                              "option",
-                              {
-                                attrs: { disabled: "" },
-                                domProps: { value: null }
-                              },
-                              [_vm._v("Select Month")]
-                            )
-                          ])
-                        ],
-                        2
-                      )
-                    ],
-                    1
-                  ),
+              _c(
+                "td",
+                [
+                  _c("b", [_vm._v("Mentor Contact Number: ")]),
                   _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "col-md" },
-                    [
-                      _c(
-                        "b-select",
-                        {
-                          attrs: { options: ["2018", "2019"] },
-                          model: {
-                            value: _vm.selectedYear,
-                            callback: function($$v) {
-                              _vm.selectedYear = $$v
-                            },
-                            expression: "selectedYear"
-                          }
-                        },
-                        [
-                          _c("template", { slot: "first" }, [
-                            _c(
-                              "option",
-                              {
-                                attrs: { disabled: "" },
-                                domProps: { value: null }
-                              },
-                              [_vm._v("Select Year")]
-                            )
-                          ])
-                        ],
-                        2
-                      )
-                    ],
-                    1
-                  )
-                ])
-              ])
+                  _c("b-input", {
+                    attrs: { placeholder: "Info Not Provided" },
+                    model: {
+                      value: _vm.mentor.phone,
+                      callback: function($$v) {
+                        _vm.$set(_vm.mentor, "phone", $$v)
+                      },
+                      expression: "mentor.phone"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "td",
+                [
+                  _c("b", [_vm._v("Mentor Email Address: ")]),
+                  _vm._v(" "),
+                  _c("b-input", {
+                    attrs: { placeholder: "Info Not Provided" },
+                    model: {
+                      value: _vm.mentor.email,
+                      callback: function($$v) {
+                        _vm.$set(_vm.mentor, "email", $$v)
+                      },
+                      expression: "mentor.email"
+                    }
+                  })
+                ],
+                1
+              )
             ]),
             _vm._v(" "),
             _c("tr", [
               _c(
                 "td",
+                { attrs: { colspan: "2" } },
                 [
                   _c("b", [_vm._v("Health Facility Name (Mentorship Venue):")]),
                   _vm._v(" "),
@@ -76029,6 +76127,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "td",
+                { attrs: { colspan: "2" } },
                 [
                   _c("b", [_vm._v("Mentor Workstation: ")]),
                   _c("b-select", {
@@ -76046,17 +76145,7 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _c("tr", [
-              _c("td", [
-                _c("b", [_vm._v("Mentor Contact Number: ")]),
-                _vm._v(_vm._s(_vm.mentor.contact) + "\n\t\t\t\t")
-              ]),
-              _vm._v(" "),
-              _c("td", [
-                _c("b", [_vm._v("Mentor Email Address: ")]),
-                _vm._v(_vm._s(_vm.mentor.email) + "\n\t\t\t\t")
-              ])
-            ])
+            _c("tr")
           ]),
           _vm._v(" "),
           _c("table", { staticClass: "table table-bordered" }, [

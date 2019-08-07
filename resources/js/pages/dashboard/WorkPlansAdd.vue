@@ -2,52 +2,68 @@
 	<div class="card">
 		<div class="card-body">
 			<center><h4><strong>ETAT + TOT MENTORSHIP WORKPLAN</strong></h4></center>
+			<div class="row">
+				<div class="col-md">
+					<strong>County Name: </strong>
+					<span v-if="!searchable">{{ mentor.county }}</span>
+					<b-select v-model="form.county" :options="counties" v-else></b-select>
+				</div>
+
+				<div class="col-md">
+					<strong>Sub County Name: </strong>
+					<span v-if="!searchable">{{ mentor.county }}</span>
+					<b-select v-model="form.subcounty" :options="subcounties" v-else></b-select>
+				</div>
+
+				<div class="col-md">
+					<b>Mentorship Period</b>
+					<div class="row">
+						<div class="col-md">
+							<b-select v-model="selectedMonth" :options="['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']">
+								<template slot="first">
+									<option :value="null" disabled>Select Month</option>
+								</template>
+							</b-select>
+						</div>
+						<div class="col-md">
+							<b-select v-model="selectedYear" :options="['2018', '2019']">
+								<template slot="first">
+									<option :value="null" disabled>Select Year</option>
+								</template>
+							</b-select>
+						</div>
+					</div>
+				</div>
+			</div>
 			<p>
-				<strong>County Name: </strong>
-				<span v-if="!searchable">{{ mentor.county }}</span>
-				<b-select v-model="form.county" :options="counties" v-else></b-select>
+				
 			</p>
 
 			<table class="table table-bordered">
 				<tr>
-					<td>
+					<td colspan="2">
 						<b>Mentor Name: </b>
 						<span v-if="!searchable">{{ mentor.hcw_name }}</span>
-						<b-select :options="mentorsList" v-else></b-select>
+						<b-select v-model="mentor" :options="mentors" v-else></b-select>
 					</td>
 					<td>
-						<b>Mentorship Period</b>
-						<div class="row">
-							<div class="col-md">
-								<b-select v-model="selectedMonth" :options="['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']">
-									<template slot="first">
-										<option :value="null" disabled>Select Month</option>
-									</template>
-								</b-select>
-							</div>
-							<div class="col-md">
-								<b-select v-model="selectedYear" :options="['2018', '2019']">
-									<template slot="first">
-										<option :value="null" disabled>Select Year</option>
-									</template>
-								</b-select>
-							</div>
-						</div>
+						<b>Mentor Contact Number: </b>
+						<b-input v-model = "mentor.phone" placeholder="Info Not Provided"></b-input>
+					</td>
+					<td>
+						<b>Mentor Email Address: </b>
+						<b-input v-model = "mentor.email" placeholder="Info Not Provided"></b-input>
 					</td>
 				</tr>
 				<tr>
-					<td><b>Health Facility Name (Mentorship Venue):</b> <b-select :options="facilities" v-model = "form.facility"></b-select></td>
-					<td>
+					<td colspan="2">
+						<b>Health Facility Name (Mentorship Venue):</b> <b-select :options="facilities" v-model = "form.facility"></b-select></td>
+					<td colspan="2">
 						<b>Mentor Workstation: </b><b-select :options="facilities" v-model = "form.workstation"></b-select>
 					</td>
 				</tr>
 				<tr>
-					<td>
-						<b>Mentor Contact Number: </b>{{ mentor.contact }}
-					</td>
-					<td>
-						<b>Mentor Email Address: </b>{{ mentor.email }}
-					</td>
+					
 				</tr>
 			</table>
 
@@ -201,6 +217,7 @@
 		data() {
 			return {
 				mentor: {},
+				mentors: [],
 				selectedMonth: null,
 				selectedYear: null,
 				id: this.$route.params.id,
@@ -213,10 +230,12 @@
 				resources: ["Pulse Oximeters", "Thermometers", "Emergency Tray", "Paediatric Protocols"],
 				counties: [],
 				facilities: [],
+				subcounties: [],
 				form: new Form({
 					activities: [],
 					facility: '',
 					county: '',
+					subcounty: '',
 					workstation: ''
 				}),
 				modal: {
@@ -232,8 +251,20 @@
 		},
 		created(){
 			this.getCounties()
+			this.getMentors()
 		},
 		methods: {
+			getMentors: function(){
+				axios.get('/api/data/mentors-data')
+				.then(res => {
+					this.mentors = _.map(res.data, (mentor) => {
+						return {
+							value: mentor,
+							text: mentor.name
+						}
+					})
+				});
+			},
 			getCounties: function(){
 				axios.get('/api/data/counties')
 				.then(res => {
@@ -253,6 +284,18 @@
 						return {
 							value: facility.id,
 							text: facility.facility_name
+						}
+					})
+				});
+			},
+
+			getSubcounties(county_id){
+				axios.get(`/api/data/subcounties/${county_id}`)
+				.then(res => {
+					this.subcounties = _.map(res.data, (subcounty) => {
+						return {
+							value: subcounty.subcounty_id,
+							text: subcounty.subcounty
 						}
 					})
 				});
@@ -287,7 +330,11 @@
 		},
 		watch: {
 			'form.county': function(county){
-				this.getFacilities(county)
+				this.getSubcounties(county)
+				// this.getFacilities(county)
+			},
+			'form.subcounty': function(subcounty){
+				this.getFacilities(subcounty)
 			}
 		}
 	}

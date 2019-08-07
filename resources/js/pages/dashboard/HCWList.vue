@@ -10,7 +10,7 @@
 					<div class="card-body">
 						<v-server-table url="/api/data/mentors" :columns="table.columns" :options="table.options">
 							<template slot="name" slot-scope="data">
-								{{ data.row.hcw_name }}
+								{{ data.row.name }}
 							</template>
 
 							<template slot = "actions">
@@ -31,7 +31,7 @@
 		data(){
 			return {
 				table: {
-					columns: ['name', 'county', 'mobile_number', 'actions'],
+					columns: ['name', 'email', 'phone', 'actions'],
 					options: {}
 				}
 			}

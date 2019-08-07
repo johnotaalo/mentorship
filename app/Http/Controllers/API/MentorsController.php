@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\HCWWorker;
+use App\Mentor;
 
 class MentorsController extends Controller
 {
@@ -18,15 +19,15 @@ class MentorsController extends Controller
     	$column = $request->get('byColumn');
 
     	$columnRef = [
-    		'hcw_name',
-    		'county',
-    		'mobile_number'
+    		'name',
+    		'email',
+    		'phone'
     	];
     	
-    	$queryBuilder = HCWWorker::select('hcw_name', 'county', 'mobile_number');
+    	$queryBuilder = Mentor::select('name', 'email', 'phone');
     	if($query != ""){
-    		$queryBuilder->where('hcw_name', 'LIKE', "%{$query}%");
-    		$queryBuilder->orWhere('county', 'LIKE', "%{$query}%");
+    		$queryBuilder->where('name', 'LIKE', "%{$query}%");
+    		$queryBuilder->orWhere('email', 'LIKE', "%{$query}%");
     	}
 
     	$allMentorsCount = $queryBuilder->count();
@@ -42,5 +43,9 @@ class MentorsController extends Controller
     		'data'	=>	$mentors,
     		'count'	=>	$allMentorsCount
     	];
+    }
+
+    function getData(){
+        return \App\Mentor::get();
     }
 }
