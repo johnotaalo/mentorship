@@ -1,13 +1,12 @@
 <template>
 	<div class="card">
 		<div class="card-body">
+			<center><h4><strong>ETAT + TOT MENTORSHIP WORKPLAN</strong></h4></center>
 			<p>
 				<strong>County Name: </strong>
 				<span v-if="!searchable">{{ mentor.county }}</span>
 				<b-select :options="counties" v-else></b-select>
 			</p>
-
-			<center><h4>ETAT + TOT MENTORSHIP WORKPLAN</h4></center>
 
 			<table class="table table-bordered">
 				<tr>
@@ -20,14 +19,14 @@
 						<b>Mentorship Period</b>
 						<div class="row">
 							<div class="col-md">
-								<b-select v-model="selectedMonth">
+								<b-select v-model="selectedMonth" :options="['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']">
 									<template slot="first">
 										<option :value="null" disabled>Select Month</option>
 									</template>
 								</b-select>
 							</div>
 							<div class="col-md">
-								<b-select v-model="selectedYear">
+								<b-select v-model="selectedYear" :options="['2018', '2019']">
 									<template slot="first">
 										<option :value="null" disabled>Select Year</option>
 									</template>
@@ -37,7 +36,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td><b>Health Facility Name (Mentorship Venue):</b> {{ mentor.facility_name }}</td>
+					<td><b>Health Facility Name (Mentorship Venue):</b> <b-select></b-select></td>
 					<td>
 						<b>Mentor Workstation: </b>{{ mentor.facility_name }}
 					</td>

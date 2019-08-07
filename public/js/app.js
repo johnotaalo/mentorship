@@ -2697,7 +2697,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -22443,7 +22442,7 @@ var VBTooltip = {
 /*!*************************************************!*\
   !*** ./node_modules/bootstrap-vue/esm/index.js ***!
   \*************************************************/
-/*! exports provided: componentsPlugin, BVModalPlugin, BVToastPlugin, AlertPlugin, BAlert, BadgePlugin, BBadge, BreadcrumbPlugin, BBreadcrumb, BBreadcrumbItem, ButtonPlugin, BButton, BButtonClose, ButtonGroupPlugin, BButtonGroup, ButtonToolbarPlugin, BButtonToolbar, CardPlugin, BCard, BCardBody, BCardFooter, BCardGroup, BCardHeader, BCardImg, BCardImgLazy, BCardSubTitle, BCardText, BCardTitle, CarouselPlugin, BCarousel, BCarouselSlide, CollapsePlugin, BCollapse, DropdownPlugin, BDropdown, BDropdownItem, BDropdownItemButton, BDropdownDivider, BDropdownForm, BDropdownGroup, BDropdownHeader, BDropdownText, EmbedPlugin, BEmbed, FormPlugin, BForm, BFormDatalist, BFormText, BFormInvalidFeedback, BFormValidFeedback, FormCheckboxPlugin, BFormCheckbox, BFormCheckboxGroup, FormFilePlugin, BFormFile, FormGroupPlugin, BFormGroup, FormInputPlugin, BFormInput, FormRadioPlugin, BFormRadio, BFormRadioGroup, FormSelectPlugin, BFormSelect, FormTextareaPlugin, BFormTextarea, ImagePlugin, BImg, BImgLazy, InputGroupPlugin, BInputGroup, BInputGroupAddon, BInputGroupAppend, BInputGroupPrepend, BInputGroupText, JumbotronPlugin, BJumbotron, LayoutPlugin, BContainer, BRow, BCol, BFormRow, LinkPlugin, BLink, ListGroupPlugin, BListGroup, BListGroupItem, MediaPlugin, BMedia, BMediaAside, BMediaBody, ModalPlugin, BModal, NavPlugin, BNav, BNavForm, BNavItem, BNavItemDropdown, BNavText, NavbarPlugin, BNavbar, BNavbarBrand, BNavbarNav, BNavbarToggle, PaginationPlugin, BPagination, PaginationNavPlugin, BPaginationNav, PopoverPlugin, BPopover, ProgressPlugin, BProgress, BProgressBar, SpinnerPlugin, BSpinner, TablePlugin, BTable, BTableLite, TabsPlugin, BTabs, BTab, ToastPlugin, BToast, BToaster, TooltipPlugin, BTooltip, directivesPlugin, VBModalPlugin, VBModal, VBPopoverPlugin, VBPopover, VBScrollspyPlugin, VBScrollspy, VBTogglePlugin, VBToggle, VBTooltipPlugin, VBTooltip, BVConfigPlugin, BVConfig, BootstrapVue, install, setConfig, default */
+/*! exports provided: BVConfigPlugin, BVConfig, BootstrapVue, install, setConfig, default, componentsPlugin, BVModalPlugin, BVToastPlugin, AlertPlugin, BAlert, BadgePlugin, BBadge, BreadcrumbPlugin, BBreadcrumb, BBreadcrumbItem, ButtonPlugin, BButton, BButtonClose, ButtonGroupPlugin, BButtonGroup, ButtonToolbarPlugin, BButtonToolbar, CardPlugin, BCard, BCardBody, BCardFooter, BCardGroup, BCardHeader, BCardImg, BCardImgLazy, BCardSubTitle, BCardText, BCardTitle, CarouselPlugin, BCarousel, BCarouselSlide, CollapsePlugin, BCollapse, DropdownPlugin, BDropdown, BDropdownItem, BDropdownItemButton, BDropdownDivider, BDropdownForm, BDropdownGroup, BDropdownHeader, BDropdownText, EmbedPlugin, BEmbed, FormPlugin, BForm, BFormDatalist, BFormText, BFormInvalidFeedback, BFormValidFeedback, FormCheckboxPlugin, BFormCheckbox, BFormCheckboxGroup, FormFilePlugin, BFormFile, FormGroupPlugin, BFormGroup, FormInputPlugin, BFormInput, FormRadioPlugin, BFormRadio, BFormRadioGroup, FormSelectPlugin, BFormSelect, FormTextareaPlugin, BFormTextarea, ImagePlugin, BImg, BImgLazy, InputGroupPlugin, BInputGroup, BInputGroupAddon, BInputGroupAppend, BInputGroupPrepend, BInputGroupText, JumbotronPlugin, BJumbotron, LayoutPlugin, BContainer, BRow, BCol, BFormRow, LinkPlugin, BLink, ListGroupPlugin, BListGroup, BListGroupItem, MediaPlugin, BMedia, BMediaAside, BMediaBody, ModalPlugin, BModal, NavPlugin, BNav, BNavForm, BNavItem, BNavItemDropdown, BNavText, NavbarPlugin, BNavbar, BNavbarBrand, BNavbarNav, BNavbarToggle, PaginationPlugin, BPagination, PaginationNavPlugin, BPaginationNav, PopoverPlugin, BPopover, ProgressPlugin, BProgress, BProgressBar, SpinnerPlugin, BSpinner, TablePlugin, BTable, BTableLite, TabsPlugin, BTabs, BTab, ToastPlugin, BToast, BToaster, TooltipPlugin, BTooltip, directivesPlugin, VBModalPlugin, VBModal, VBPopoverPlugin, VBPopover, VBScrollspyPlugin, VBScrollspy, VBTogglePlugin, VBToggle, VBTooltipPlugin, VBTooltip */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -75340,31 +75339,6 @@ var render = function() {
               "router-link",
               {
                 staticClass: "sidebar-link",
-                attrs: { to: { name: "dashboard.index" } }
-              },
-              [
-                _c("i", {
-                  staticClass: "align-middle",
-                  attrs: { "data-feather": "pie-chart" }
-                }),
-                _vm._v(" "),
-                _c("span", { staticClass: "align-middle" }, [
-                  _vm._v("Dashboard")
-                ])
-              ]
-            )
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "li",
-          { staticClass: "sidebar-item" },
-          [
-            _c(
-              "router-link",
-              {
-                staticClass: "sidebar-link",
                 attrs: { to: { name: "dashboard.hcwlist" } }
               },
               [
@@ -75443,32 +75417,7 @@ var render = function() {
               )
             ]
           )
-        ]),
-        _vm._v(" "),
-        _c(
-          "li",
-          { staticClass: "sidebar-item" },
-          [
-            _c(
-              "router-link",
-              {
-                staticClass: "sidebar-link",
-                attrs: { to: { name: "dashboard.workplans" } }
-              },
-              [
-                _c("i", {
-                  staticClass: "align-middle",
-                  attrs: { "data-feather": "book" }
-                }),
-                _vm._v(" "),
-                _c("span", { staticClass: "align-middle" }, [
-                  _vm._v("Workplans")
-                ])
-              ]
-            )
-          ],
-          1
-        )
+        ])
       ]),
       _vm._v(" "),
       _vm._m(1)
@@ -75908,6 +75857,10 @@ var render = function() {
         "div",
         { staticClass: "card-body" },
         [
+          _c("center", [
+            _c("h4", [_c("strong", [_vm._v("ETAT + TOT MENTORSHIP WORKPLAN")])])
+          ]),
+          _vm._v(" "),
           _c(
             "p",
             [
@@ -75919,8 +75872,6 @@ var render = function() {
             ],
             1
           ),
-          _vm._v(" "),
-          _c("center", [_c("h4", [_vm._v("ETAT + TOT MENTORSHIP WORKPLAN")])]),
           _vm._v(" "),
           _c("table", { staticClass: "table table-bordered" }, [
             _c("tr", [
@@ -75947,6 +75898,22 @@ var render = function() {
                       _c(
                         "b-select",
                         {
+                          attrs: {
+                            options: [
+                              "January",
+                              "February",
+                              "March",
+                              "April",
+                              "May",
+                              "June",
+                              "July",
+                              "August",
+                              "September",
+                              "October",
+                              "November",
+                              "December"
+                            ]
+                          },
                           model: {
                             value: _vm.selectedMonth,
                             callback: function($$v) {
@@ -75980,6 +75947,7 @@ var render = function() {
                       _c(
                         "b-select",
                         {
+                          attrs: { options: ["2018", "2019"] },
                           model: {
                             value: _vm.selectedYear,
                             callback: function($$v) {
@@ -76010,10 +75978,15 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("tr", [
-              _c("td", [
-                _c("b", [_vm._v("Health Facility Name (Mentorship Venue):")]),
-                _vm._v(" " + _vm._s(_vm.mentor.facility_name))
-              ]),
+              _c(
+                "td",
+                [
+                  _c("b", [_vm._v("Health Facility Name (Mentorship Venue):")]),
+                  _vm._v(" "),
+                  _c("b-select")
+                ],
+                1
+              ),
               _vm._v(" "),
               _c("td", [
                 _c("b", [_vm._v("Mentor Workstation: ")]),
@@ -98394,8 +98367,8 @@ router.beforeEach(function (to, from, next) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\mentorship\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\mentorship\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /var/www/mentorship/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /var/www/mentorship/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

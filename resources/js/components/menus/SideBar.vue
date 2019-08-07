@@ -13,9 +13,9 @@
 					<li class="sidebar-header">
 						Main
 					</li>
-					<li class="sidebar-item">
+					<!-- <li class="sidebar-item">
 						<router-link class="sidebar-link" :to="{ name: 'dashboard.index' }"><i class="align-middle" data-feather="pie-chart"></i> <span class="align-middle">Dashboard</span></router-link>
-					</li>
+					</li> -->
 					<li class="sidebar-item">
 						<router-link class="sidebar-link" :to="{ name: 'dashboard.hcwlist' }"><i class="align-middle" data-feather="users"></i> <span class="align-middle">Mentor List</span></router-link>
 					</li>
@@ -30,9 +30,9 @@
 						</ul>
 					</li>
 
-					<li class="sidebar-item">
+					<!-- <li class="sidebar-item">
 						<router-link class="sidebar-link" :to="{ name: 'dashboard.workplans' }"><i class="align-middle" data-feather="book"></i> <span class="align-middle">Workplans</span></router-link>
-					</li>
+					</li> -->
 				</ul>
 
 				<div class="sidebar-bottom d-none d-lg-block">
