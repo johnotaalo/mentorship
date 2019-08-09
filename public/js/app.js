@@ -2714,8 +2714,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 
@@ -2764,6 +2762,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     this.getCounties();
     this.getMentors();
+    this.getSkills();
   },
   methods: {
     getMentors: function getMentors() {
@@ -2802,11 +2801,35 @@ __webpack_require__.r(__webpack_exports__);
         });
       });
     },
-    getSubcounties: function getSubcounties(county_id) {
+    getSkills: function getSkills() {
       var _this4 = this;
 
+      axios.get("api/data/skills").then(function (res) {
+        _this4.skills = _.map(res.data, function (skill) {
+          return {
+            value: skill.id,
+            label: skill.topic
+          };
+        });
+      });
+    },
+    getExpectedOutcomes: function getExpectedOutcomes() {
+      var _this5 = this;
+
+      axios.get('api/data/outcomes').then(function (res) {
+        _this5.expectedOutcomes = _.map(res.data, function (outcome) {
+          return {
+            value: outcome.id,
+            label: outcome.outcome
+          };
+        });
+      });
+    },
+    getSubcounties: function getSubcounties(county_id) {
+      var _this6 = this;
+
       axios.get("/api/data/subcounties/".concat(county_id)).then(function (res) {
-        _this4.subcounties = _.map(res.data, function (subcounty) {
+        _this6.subcounties = _.map(res.data, function (subcounty) {
           return {
             value: subcounty.subcounty_id,
             text: subcounty.subcounty
@@ -2818,7 +2841,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$refs['modal-add-activity'].show();
     },
     manageModalData: function manageModalData() {
-      var _this5 = this;
+      var _this7 = this;
 
       var data = {};
       this.form.activities.push(data);
@@ -2827,9 +2850,9 @@ __webpack_require__.r(__webpack_exports__);
         data[key] = value;
 
         if (Array.isArray(value)) {
-          _this5.modal[key] = [];
+          _this7.modal[key] = [];
         } else {
-          _this5.modal[key] = "";
+          _this7.modal[key] = "";
         }
       });
     }
@@ -76280,60 +76303,6 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _c("hr"),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group row" }, [
-            _c(
-              "div",
-              { staticClass: "col-md" },
-              [
-                _c("label", { staticClass: "label-control" }, [
-                  _c("strong", [_vm._v("Targeted Mentee")])
-                ]),
-                _vm._v(" "),
-                _c(
-                  "b-button",
-                  {
-                    staticClass: "float-right",
-                    attrs: { size: "sm" },
-                    on: {
-                      click: function($event) {
-                        return _vm.addRow(_vm.modal.mentees)
-                      }
-                    }
-                  },
-                  [_vm._v("Add Mentee")]
-                ),
-                _vm._v(" "),
-                _vm.modal.mentees.length > 0
-                  ? _c(
-                      "div",
-                      { staticClass: "mt-2" },
-                      _vm._l(_vm.modal.mentees, function(row, index) {
-                        return _c("mentee", {
-                          key: index,
-                          attrs: { cadres: _vm.cadre },
-                          model: {
-                            value: _vm.modal.mentees[index],
-                            callback: function($$v) {
-                              _vm.$set(_vm.modal.mentees, index, $$v)
-                            },
-                            expression: "modal.mentees[index]"
-                          }
-                        })
-                      }),
-                      1
-                    )
-                  : _c("div", [
-                      _c("p", [_c("center", [_vm._v("No mentees added")])], 1)
-                    ])
-              ],
-              1
-            )
-          ]),
-          _vm._v(" "),
-          _c("hr"),
-          _vm._v(" "),
           _c("div", { staticClass: "form-group row" }, [
             _c(
               "div",
@@ -76499,9 +76468,7 @@ var staticRenderFns = [
       _c("tr", [
         _c("th", [_vm._v("Site / Service Delivery Area (Indicate)")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Mentee (Indicate cadre & number of pax)")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("# of sessions planned / Q")]),
+        _c("th", [_vm._v("# of sections planned")]),
         _vm._v(" "),
         _c("th", [
           _vm._v("Cases to be reviewed (list of cases based on audit)")
@@ -76509,9 +76476,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Skills to be mentored (list of skills)")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Resources needed")]),
+        _c("th", [_vm._v("Expected outcome of the mentorship session/s")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Expected outcome of the mentorship session/s")])
+        _c("th", [_vm._v("Resources needed")])
       ])
     ])
   }

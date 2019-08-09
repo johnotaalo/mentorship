@@ -72,12 +72,12 @@
 				<thead>
 					<tr>
 						<th>Site / Service Delivery Area (Indicate)</th>
-						<th>Mentee (Indicate cadre & number of pax)</th>
-						<th># of sessions planned / Q</th>
+						<!-- <th>Mentee (Indicate cadre & number of pax)</th> -->
+						<th># of sections planned</th>
 						<th>Cases to be reviewed (list of cases based on audit)</th>
 						<th>Skills to be mentored (list of skills)</th>
-						<th>Resources needed</th>
 						<th>Expected outcome of the mentorship session/s</th>
+						<th>Resources needed</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -152,8 +152,7 @@
 				<label class = "label-control"><strong>Site / Service Delivery Area</strong></label>
 				<b-select :options="sites" v-model = "modal.site"></b-select>
 			</div>
-			<hr>
-			<div class="form-group row">
+			<!-- <div class="form-group row">
 				<div class="col-md">
 					<label class = "label-control"><strong>Targeted Mentee</strong></label>
 					<b-button size="sm" class="float-right" @click="addRow(modal.mentees)">Add Mentee</b-button>
@@ -164,8 +163,7 @@
 						<p><center>No mentees added</center></p>
 					</div>
 				</div>
-			</div>
-			<hr>
+			</div> -->
 			<div class="form-group row">
 				<div class="col-md">
 					<label># of Sessions Planned</label>
@@ -257,6 +255,7 @@
 		created(){
 			this.getCounties()
 			this.getMentors()
+			this.getSkills()
 		},
 		methods: {
 			getMentors: function(){
@@ -292,6 +291,30 @@
 						}
 					})
 				});
+			},
+
+			getSkills(){
+				axios.get(`api/data/skills`)
+				.then(res => {
+					this.skills = _.map(res.data, (skill) => {
+						return {
+							value: skill.id,
+							label: skill.topic
+						}
+					})
+				});
+			},
+
+			getExpectedOutcomes(){
+				axios.get('api/data/outcomes')
+				.then(res => {
+					this.expectedOutcomes = _.map(res.data, (outcome) => {
+						return {
+							value: outcome.id,
+							label: outcome.outcome
+						}
+					})
+				})
 			},
 
 			getSubcounties(county_id){

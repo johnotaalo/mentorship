@@ -45,6 +45,12 @@ class MentorsController extends Controller
     	];
     }
 
+    function getSkills(){
+        $skills = \App\Topic::all();
+
+        return $skills;
+    }
+
     function getData(){
         return \App\Mentor::orderBy('name', 'ASC')->get();
     }
