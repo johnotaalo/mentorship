@@ -72,12 +72,12 @@
 				<thead>
 					<tr>
 						<th>Site / Service Delivery Area (Indicate)</th>
-						<th>Mentee (Indicate cadre & number of pax)</th>
+						<!-- <th>Mentee (Indicate cadre & number of pax)</th> -->
 						<th># of sections planned</th>
 						<th>Cases to be reviewed (list of cases based on audit)</th>
 						<th>Skills to be mentored (list of skills)</th>
-						<th>Resources needed</th>
 						<th>Expected outcome of the mentorship session/s</th>
+						<th>Resources needed</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -152,7 +152,7 @@
 				<label>Site / Service Delivery Area</label>
 				<b-select :options="sites" v-model = "modal.site"></b-select>
 			</div>
-			<div class="form-group row">
+			<!-- <div class="form-group row">
 				<div class="col-md">
 					<label>Mentee</label>
 					<b-button size="sm" class="float-right" @click="addRow(modal.mentees)">Add Mentee</b-button>
@@ -163,7 +163,7 @@
 						<p><center>No mentees added</center></p>
 					</div>
 				</div>
-			</div>
+			</div> -->
 			<div class="form-group row">
 				<div class="col-md">
 					<label># of Sessions</label>
@@ -255,6 +255,7 @@
 		created(){
 			this.getCounties()
 			this.getMentors()
+			this.getSkills()
 		},
 		methods: {
 			getMentors: function(){
@@ -287,6 +288,18 @@
 						return {
 							value: facility.id,
 							text: facility.facility_name
+						}
+					})
+				});
+			},
+
+			getSkills(){
+				axios.get(`api/data/skills`)
+				.then(res => {
+					this.skills = _.map(res.data, (skill) => {
+						return {
+							value: skill.id,
+							label: skill.topic
 						}
 					})
 				});
