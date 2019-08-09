@@ -14,23 +14,28 @@ class ExpectedOutcomesSeeder extends Seeder
     	$outcomes = [
     		[
     			'site_id'	=>	1,
-    			'outcome'	=>	'Triage System adopted and operational'
+    			'outcome'	=>	'Triage System adopted and operational',
+    			'indicate'	=>	false
     		],
     		[
     			'site_id'	=>	1,
-    			'outcome'	=>	'Children with cough or cold/diarrhoea are correctly classified'
+    			'outcome'	=>	'Children with cough or cold/diarrhoea are correctly classified',
+    			'indicate'	=>	false
     		],
     		[
     			'site_id'	=>	1,
-    			'outcome'	=>	'Children with cough or cold/diarrhoea are correctly treated'
+    			'outcome'	=>	'Children with cough or cold/diarrhoea are correctly treated',
+    			'indicate'	=>	false
     		],
     		[
     			'site_id'	=>	1,
-    			'outcome'	=>	'Pre-referral treatment given, effective referral mechanisms addressed'
+    			'outcome'	=>	'Pre-referral treatment given, effective referral mechanisms addressed',
+    			'indicate'	=>	false
     		],
     		[
     			'site_id'	=>	1,
-    			'outcome'	=>	'Standard utilization of guidelines/protocols & job aids / Registers'
+    			'outcome'	=>	'Standard utilization of guidelines/protocols & job aids / Registers',
+    			'indicate'	=>	false
     		],
     		[
     			'site_id'	=>	1,
@@ -39,7 +44,8 @@ class ExpectedOutcomesSeeder extends Seeder
     		],
     		[
     			'site_id'	=>	2,
-    			'outcome'	=>	'Correct skills in newborn resuscitation'
+    			'outcome'	=>	'Correct skills in newborn resuscitation',
+    			'indicate'	=>	false
     		]
     	];
 

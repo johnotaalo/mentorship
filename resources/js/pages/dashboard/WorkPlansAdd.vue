@@ -305,6 +305,18 @@
 				});
 			},
 
+			getExpectedOutcomes(){
+				axios.get('api/data/outcomes')
+				.then(res => {
+					this.expectedOutcomes = _.map(res.data, (outcome) => {
+						return {
+							value: outcome.id,
+							label: outcome.outcome
+						}
+					})
+				})
+			},
+
 			getSubcounties(county_id){
 				axios.get(`/api/data/subcounties/${county_id}`)
 				.then(res => {

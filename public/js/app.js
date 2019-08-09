@@ -2813,11 +2813,23 @@ __webpack_require__.r(__webpack_exports__);
         });
       });
     },
-    getSubcounties: function getSubcounties(county_id) {
+    getExpectedOutcomes: function getExpectedOutcomes() {
       var _this5 = this;
 
+      axios.get('api/data/outcomes').then(function (res) {
+        _this5.expectedOutcomes = _.map(res.data, function (outcome) {
+          return {
+            value: outcome.id,
+            label: outcome.outcome
+          };
+        });
+      });
+    },
+    getSubcounties: function getSubcounties(county_id) {
+      var _this6 = this;
+
       axios.get("/api/data/subcounties/".concat(county_id)).then(function (res) {
-        _this5.subcounties = _.map(res.data, function (subcounty) {
+        _this6.subcounties = _.map(res.data, function (subcounty) {
           return {
             value: subcounty.subcounty_id,
             text: subcounty.subcounty
@@ -2829,7 +2841,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$refs['modal-add-activity'].show();
     },
     manageModalData: function manageModalData() {
-      var _this6 = this;
+      var _this7 = this;
 
       var data = {};
       this.form.activities.push(data);
@@ -2838,9 +2850,9 @@ __webpack_require__.r(__webpack_exports__);
         data[key] = value;
 
         if (Array.isArray(value)) {
-          _this6.modal[key] = [];
+          _this7.modal[key] = [];
         } else {
-          _this6.modal[key] = "";
+          _this7.modal[key] = "";
         }
       });
     }
