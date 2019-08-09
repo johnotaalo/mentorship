@@ -2714,6 +2714,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -76260,7 +76262,9 @@ var render = function() {
             "div",
             { staticClass: "form-group" },
             [
-              _c("label", [_vm._v("Site / Service Delivery Area")]),
+              _c("label", { staticClass: "label-control" }, [
+                _c("strong", [_vm._v("Site / Service Delivery Area")])
+              ]),
               _vm._v(" "),
               _c("b-select", {
                 attrs: { options: _vm.sites },
@@ -76276,12 +76280,16 @@ var render = function() {
             1
           ),
           _vm._v(" "),
+          _c("hr"),
+          _vm._v(" "),
           _c("div", { staticClass: "form-group row" }, [
             _c(
               "div",
               { staticClass: "col-md" },
               [
-                _c("label", [_vm._v("Mentee")]),
+                _c("label", { staticClass: "label-control" }, [
+                  _c("strong", [_vm._v("Targeted Mentee")])
+                ]),
                 _vm._v(" "),
                 _c(
                   "b-button",
@@ -76324,12 +76332,14 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
+          _c("hr"),
+          _vm._v(" "),
           _c("div", { staticClass: "form-group row" }, [
             _c(
               "div",
               { staticClass: "col-md" },
               [
-                _c("label", [_vm._v("# of Sessions")]),
+                _c("label", [_vm._v("# of Sessions Planned")]),
                 _vm._v(" "),
                 _c(
                   "b-input-group",
@@ -76491,7 +76501,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Mentee (Indicate cadre & number of pax)")]),
         _vm._v(" "),
-        _c("th", [_vm._v("# of sections planned")]),
+        _c("th", [_vm._v("# of sessions planned / Q")]),
         _vm._v(" "),
         _c("th", [
           _vm._v("Cases to be reviewed (list of cases based on audit)")

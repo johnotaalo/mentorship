@@ -73,7 +73,7 @@
 					<tr>
 						<th>Site / Service Delivery Area (Indicate)</th>
 						<th>Mentee (Indicate cadre & number of pax)</th>
-						<th># of sections planned</th>
+						<th># of sessions planned / Q</th>
 						<th>Cases to be reviewed (list of cases based on audit)</th>
 						<th>Skills to be mentored (list of skills)</th>
 						<th>Resources needed</th>
@@ -149,12 +149,13 @@
 
 		<b-modal ref="modal-add-activity" title="Add Activity" @ok="manageModalData">
 			<div class="form-group">
-				<label>Site / Service Delivery Area</label>
+				<label class = "label-control"><strong>Site / Service Delivery Area</strong></label>
 				<b-select :options="sites" v-model = "modal.site"></b-select>
 			</div>
+			<hr>
 			<div class="form-group row">
 				<div class="col-md">
-					<label>Mentee</label>
+					<label class = "label-control"><strong>Targeted Mentee</strong></label>
 					<b-button size="sm" class="float-right" @click="addRow(modal.mentees)">Add Mentee</b-button>
 					<div v-if="modal.mentees.length > 0" class="mt-2">
 						<mentee v-for="(row, index) in modal.mentees" :key="index" :cadres="cadre" v-model="modal.mentees[index]"></mentee>
@@ -164,9 +165,10 @@
 					</div>
 				</div>
 			</div>
+			<hr>
 			<div class="form-group row">
 				<div class="col-md">
-					<label># of Sessions</label>
+					<label># of Sessions Planned</label>
 					<b-input-group append="Sessions" class="mb-8 mr-sm-8 mb-sm-0">
 						<b-form-input v-model = "modal.sessions"></b-form-input>
 					</b-input-group>
