@@ -3700,7 +3700,7 @@ __webpack_require__.r(__webpack_exports__);
         error: function error() {
           app.isLoading = false;
           app.has_error = true;
-          this.$toastr.success('Incorrect Email or Password', 'Error', app.toastrOptions);
+          this.$toastr.error('Incorrect Email or Password', 'Error', app.toastrOptions);
         },
         rememberMe: true,
         fetchUser: true
@@ -3813,14 +3813,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      data: {
-        counties: []
+      selectedCounty: {
+        value: "",
+        label: "All Counties"
       },
-      fields: ['first_name', 'last_name', 'county', 'cycle', 'actions'],
-      items: [{
+      data: {
+        counties: [],
+        workplans: []
+      },
+      fields: ['name', 'county', 'facility', 'cycle', 'actions'],
+      itemsx: [{
         id: 1,
         first_name: "Sample",
         last_name: "Mentor",
@@ -3848,13 +3854,25 @@ __webpack_require__.r(__webpack_exports__);
     getCounties: function getCounties() {
       var _this = this;
 
-      axios.get('/api/data/counties').then(function (res) {
+      axios.get('/data/counties').then(function (res) {
         _this.data.counties = _.map(res.data, function (county) {
           return {
             value: county.id,
             label: county.county
           };
         });
+
+        _this.data.counties.unshift({
+          value: "",
+          label: "All Counties"
+        });
+      });
+    },
+    getWorkplans: function getWorkplans() {
+      var _this2 = this;
+
+      axios.get('/data/workplans').then(function (res) {
+        _this2.items;
       });
     },
     viewWorkplan: function viewWorkplan(id) {
@@ -3864,6 +3882,12 @@ __webpack_require__.r(__webpack_exports__);
           id: id
         }
       });
+    }
+  },
+  computed: {
+    items: function items() {
+      if (this.selectedCounty.value != "") {// Filter workplans
+      } else {}
     }
   }
 });
@@ -78101,7 +78125,16 @@ var render = function() {
               [
                 _c("label", [_vm._v("Select a County")]),
                 _vm._v(" "),
-                _c("v-select", { attrs: { options: _vm.data.counties } })
+                _c("v-select", {
+                  attrs: { options: _vm.data.counties },
+                  model: {
+                    value: _vm.selectedCounty,
+                    callback: function($$v) {
+                      _vm.selectedCounty = $$v
+                    },
+                    expression: "selectedCounty"
+                  }
+                })
               ],
               1
             )
@@ -78113,35 +78146,12 @@ var render = function() {
             "div",
             { staticClass: "col-md" },
             [
-              _c("b-table", {
+              _c("v-server-table", {
                 attrs: {
-                  striped: "",
-                  bordered: "",
-                  items: _vm.items,
-                  fields: _vm.fields,
-                  small: ""
-                },
-                scopedSlots: _vm._u([
-                  {
-                    key: "actions",
-                    fn: function(data) {
-                      return [
-                        _c(
-                          "b-button",
-                          {
-                            attrs: { size: "sm", variant: "warning" },
-                            on: {
-                              click: function($event) {
-                                return _vm.viewWorkplan(data.item.id)
-                              }
-                            }
-                          },
-                          [_vm._v("View")]
-                        )
-                      ]
-                    }
-                  }
-                ])
+                  url: "/data/workplans",
+                  columns: _vm.fields,
+                  options: _vm.options
+                }
               })
             ],
             1
@@ -99915,7 +99925,6 @@ __webpack_require__.r(__webpack_exports__);
  */
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
-window.instance = __webpack_require__(/*! ./http */ "./resources/js/http.js");
 
 
 
@@ -99951,6 +99960,15 @@ Vue.router = _router__WEBPACK_IMPORTED_MODULE_3__["default"];
 Vue.use(vue_axios__WEBPACK_IMPORTED_MODULE_1___default.a, axios);
 axios.defaults.baseURL = "".concat("http://mentorship.test", "/api");
 Vue.use(_websanova_vue_auth__WEBPACK_IMPORTED_MODULE_0___default.a, _auth__WEBPACK_IMPORTED_MODULE_2__["default"]);
+window.instance = __webpack_require__(/*! ./http */ "./resources/js/http.js");
+axios.interceptors.request.use(function (config) {
+  NProgress.start();
+  return config;
+});
+axios.interceptors.response.use(function (response) {
+  NProgress.done();
+  return response;
+});
 var app = new Vue({
   el: '#app',
   router: _router__WEBPACK_IMPORTED_MODULE_3__["default"]
@@ -100717,7 +100735,7 @@ function () {
       }
 
       return new Promise(function (resolve, reject) {
-        instance["default"]({
+        axios["default"]({
           method: requestType,
           url: url,
           data: formData
@@ -100770,10 +100788,8 @@ function () {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-
-var instance = axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
+// import axios from 'axios';
+var instance = axios.create({
   baseURL: '/api'
 });
 instance.interceptors.request.use(function (config) {

@@ -134,7 +134,7 @@ class Form {
 
     return new Promise((resolve, reject) => {
 
-      instance.default({
+      axios.default({
         method: requestType,
         url: url,
         data: formData

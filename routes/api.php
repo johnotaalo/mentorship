@@ -40,4 +40,5 @@ Route::prefix('data')->group(function(){
 	Route::get('cases', 'API\MentorsController@getCases');
 
 	Route::post('workplan', 'API\WorkplanController@add');
+	Route::get('/workplans', 'API\WorkplanController@all');
 });

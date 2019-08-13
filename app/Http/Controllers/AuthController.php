@@ -57,6 +57,10 @@ class AuthController extends Controller
 		]);
 	}
 
+	public function getUser(){
+		return Auth::user();
+	}
+
 	public function refresh()
 	{
 		if ($token = $this->guard()->refresh()) {

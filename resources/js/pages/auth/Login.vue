@@ -55,7 +55,7 @@
 					error: function() {
 						app.isLoading = false
 						app.has_error = true
-						this.$toastr.success('Incorrect Email or Password', 'Error', app.toastrOptions);
+						this.$toastr.error('Incorrect Email or Password', 'Error', app.toastrOptions);
 					},
 					rememberMe: true,
 					fetchUser: true

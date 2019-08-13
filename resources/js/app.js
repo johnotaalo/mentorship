@@ -5,7 +5,7 @@
  */
 
 require('./bootstrap');
-window.instance = require('./http')
+
 import VueAuth from '@websanova/vue-auth'
 import VueAxios from 'vue-axios'
 
@@ -47,6 +47,17 @@ Vue.router = router
 Vue.use(VueAxios, axios)
 axios.defaults.baseURL = `${process.env.MIX_APP_URL}/api`
 Vue.use(VueAuth, auth)
+window.instance = require('./http')
+
+axios.interceptors.request.use(config => {
+	NProgress.start()
+	return config;
+});
+
+axios.interceptors.response.use(response => {
+	NProgress.done()
+	return response;
+});
 const app = new Vue({
     el: '#app',
    router: router

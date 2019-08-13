@@ -16,7 +16,7 @@ class WorkplanController extends Controller
     	$workplan->mentor_id = $request->mentor['value']['id'];
     	$workplan->mentor_venue = $request->facility;
     	$workplan->mentor_work_station = $request->workstation;
-    	$workplan->created_by = 0;
+    	$workplan->created_by = \Auth::user()->id;
 
     	$workplan->save();
 
@@ -64,5 +64,54 @@ class WorkplanController extends Controller
     	$mentor->email = $request->mentor['value']['email'];
 
     	$mentor->save();
+    }
+
+    function all(Request $request){
+        $q = $request->get('query');
+        $limit = $request->get('limit');
+        $page = $request->get('page');
+        $orderBy = $request->get('orderBy');
+        $ascending = $request->get('ascending');
+        $column = $request->get('byColumn');
+
+        $columnRef = [
+            'name', 'county', 'facility', 'cycle'
+        ];
+
+        $queryBuilder = \App\Workplan::select('*');
+        $queryBuilder->with('mentor', 'subcounty', 'venue', 'workstation');
+        if($q != ""){
+            $queryBuilder->whereHas('mentor', function ($query) use ($q){
+                $query->where('name', 'like', "%{$q}%");
+            });
+
+            $queryBuilder->orWhereHas('subcounty', function($query) use ($q){
+                $query->whereHas('county', function($cq) use ($q){
+                    $cq->where('county', 'like', "%{$q}%");
+                });
+            });
+
+            $queryBuilder->orWhereHas('subcounty', function($query) use ($q){
+                $query->where('subcounty', 'like', "%{$q}%");
+            });
+
+            $queryBuilder->orWhereHas('venue', function($query) use ($q){
+                $query->where('facility_name', 'like', "%{$q}%");
+            });
+
+            $queryBuilder->orWhereHas('workstation', function($query) use ($q){
+                $query->where('facility_name', 'like', "%{$q}%");
+            });
+        }
+
+        $allWorkplansCount = $queryBuilder->count();
+        $queryBuilder->limit($limit)->skip($limit * ($page - 1));
+
+        $workplans = $queryBuilder->get();
+
+        return [
+            'data'  =>  $workplans,
+            'count' =>  $allWorkplansCount
+        ];
     }
 }
