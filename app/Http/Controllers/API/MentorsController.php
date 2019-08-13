@@ -46,7 +46,7 @@ class MentorsController extends Controller
     }
 
     function getSkills(){
-        $skills = \App\Topic::all();
+        $skills = \App\Topic::with('outcome')->get();
 
         return $skills;
     }
@@ -63,5 +63,9 @@ class MentorsController extends Controller
 
     function getResources(){
         return \App\Resource::all();
+    }
+
+    function getCases(){
+        return \App\CaseModel::all();
     }
 }

@@ -19,14 +19,14 @@
 					<b>Mentorship Period</b>
 					<div class="row">
 						<div class="col-md">
-							<b-select v-model="selectedMonth" :options="['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']">
+							<b-select v-model="form.period_month" :options="['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']">
 								<template slot="first">
 									<option :value="null" disabled>Select Month</option>
 								</template>
 							</b-select>
 						</div>
 						<div class="col-md">
-							<b-select v-model="selectedYear" :options="['2018', '2019']">
+							<b-select v-model="form.period_year" :options="['2018', '2019']">
 								<template slot="first">
 									<option :value="null" disabled>Select Year</option>
 								</template>
@@ -45,15 +45,15 @@
 						<b>Mentor Name: </b>
 						<span v-if="!searchable">{{ mentor.hcw_name }}</span>
 						<!-- <b-select v-model="mentor" :options="mentors" v-else></b-select> -->
-						<v-select v-model="mentor" :options="mentors" placeholder="Click to Enter" v-else></v-select>
+						<v-select v-model="form.mentor" :options="mentors" placeholder="Click to Enter" v-else></v-select>
 					</td>
 					<td>
 						<b>Mentor Contact Number: </b>
-						<b-input v-model = "mentor.value.phone" placeholder="Info Not Provided (Click to Enter)"></b-input>
+						<b-input v-model = "form.mentor.value.phone" placeholder="Info Not Provided (Click to Enter)"></b-input>
 					</td>
 					<td>
 						<b>Mentor Email Address: </b>
-						<b-input v-model = "mentor.value.email" placeholder="Info Not Provided (Click to Enter)"></b-input>
+						<b-input v-model = "form.mentor.value.email" placeholder="Info Not Provided (Click to Enter)"></b-input>
 					</td>
 				</tr>
 				<tr>
@@ -80,35 +80,32 @@
 						<th>Resources needed</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody v-if = "form.activities">
 					<tr v-for="(row, index) in form.activities" :key="index">
 						<td>
-							{{ row.site }}
-						</td>
-						<td>
-							<p v-for="item in row.mentees">{{ item.mentee_no }} - {{ item.mentee_cadre }}</p>
+							{{ row.site.label }}
 						</td>
 						<td>
 							{{ row.sessions }} sessions
 						</td>
 						<td>
 							<ol>
-								<li v-for="item in row.cases">{{ item }}</li>
+								<li v-for="item in row.cases">{{ item.label }}</li>
 							</ol>
 						</td>
 						<td>
 							<ol>
-								<li v-for="item in row.skills">{{ item }}</li>
+								<li v-for="item in row.skills">{{ item.topic }}</li>
 							</ol>
 						</td>
 						<td>
 							<ol>
-								<li v-for="item in row.resources">{{ item }}</li>
+								<li v-for="item in row.skills">{{ item.outcome.outcome }}</li>
 							</ol>
 						</td>
 						<td>
 							<ol>
-								<li v-for="item in row.expectedOutcomes">{{ item.outcome }}</li>
+								<li v-for="item in row.resources">{{ item.label }}</li>
 							</ol>
 						</td>
 						<!-- <td>
@@ -142,15 +139,22 @@
 						</td> -->
 					</tr>
 				</tbody>
+				<tbody v-else>
+					<tr>
+						<td colspan="6"><center>Click Add Row to add activity</center></td>
+					</tr>
+				</tbody>
 			</table>
 
-			<b-button size="sm" variant = "primary" @click="showAddActivityModal">Add Row</b-button>
+			<b-button size="sm" variant = "primary" @click="showAddActivityModal"><i class="align-left" data-feather="plus"></i>&nbsp;Add Row</b-button>
+			<b-button size="sm" variant = "primary" class="float-right" @click="addData"><i class="align-left" data-feather="save"></i>&nbsp;Save Data</b-button>
 		</div>
 
 		<b-modal ref="modal-add-activity" title="Add Activity" @ok="manageModalData">
 			<div class="form-group">
 				<label class = "label-control"><strong>Site / Service Delivery Area</strong></label>
-				<b-select :options="sites" v-model = "modal.site"></b-select>
+				<!-- <b-select :options="sites" v-model = "modal.site"></b-select> -->
+				<v-select :options="sites" v-model = "modal.site"></v-select>
 			</div>
 			<!-- <div class="form-group row">
 				<div class="col-md">
@@ -191,21 +195,17 @@
 
 			<div class="form-group row">
 				<div class="col-md">
-					<label>Resources needed</label>
-					<v-select v-model = "modal.resources" :options="resources" multiple></v-select>
+					<label>Expected Outcome</label>
+					<ul>
+						<li v-for="skill in modal.skills">{{ skill.outcome.outcome }}</li>
+					</ul>
 				</div>
 			</div>
 
 			<div class="form-group row">
 				<div class="col-md">
-					<label>Expected Outcomes</label>
-					<b-button size="sm" class="float-right" @click="addRow(modal.expectedOutcomes)">Add Outcome</b-button>
-					<div v-if="modal.expectedOutcomes.length > 0" class="mt-2">
-						<expected-outcome v-for = "(row, index) in modal.expectedOutcomes" :key="index" v-model="modal.expectedOutcomes[index]" :index="index" @remove="removeRow($event, modal.expectedOutcomes)"></expected-outcome>
-					</div>
-					<div v-else>
-						<p><center>No outcomes added</center></p>
-					</div>
+					<label>Resources needed</label>
+					<v-select v-model = "modal.resources" :options="resources" multiple></v-select>
 				</div>
 			</div>
 		</b-modal>
@@ -244,7 +244,12 @@
 					facility: '',
 					county: '',
 					subcounty: '',
-					workstation: ''
+					workstation: '',
+					period_month: '',
+					period_year: '',
+					mentor: {
+						value: ""
+					}
 				}),
 				modal: {
 					site: "",
@@ -263,6 +268,7 @@
 			this.getSkills()
 			this.getSites()
 			this.getResources()
+			this.getCases()
 		},
 		methods: {
 			getMentors: function(){
@@ -312,14 +318,6 @@
 					})
 
 					this.skills = skillsMap
-
-					// console.log(skillsMap)
-					// this.skills = _.map(res.data, (skill) => {
-					// 	return {
-					// 		value: skill.id,
-					// 		label: skill.topic
-					// 	}
-					// })
 				});
 			},
 
@@ -341,7 +339,7 @@
 					this.sites = _.map(res.data, (site) => {
 						return {
 							value: site.id,
-							text: site.site
+							label: site.site
 						}
 					})
 				})
@@ -354,6 +352,18 @@
 						return {
 							value: resource.id,
 							label: resource.resource
+						}
+					})
+				})
+			},
+
+			getCases(){
+				axios.get('/api/data/cases')
+				.then(res => {
+					this.cases = _.map(res.data, (casex) => {
+						return {
+							value: casex.id,
+							label: casex.case
 						}
 					})
 				})
@@ -384,6 +394,13 @@
 						this.modal[key] = ""
 					}
 				})
+			},
+			addData: function(){
+				alert('clicked');
+				this.form.post('/data/workplan')
+				.then(res => {
+					console.log(res)
+				})
 			}
 		},
 		computed: {
@@ -398,7 +415,7 @@
 				return []
 			},
 			filteredSkills: function(){
-				return this.skills[this.modal.site]
+				return this.skills[this.modal.site.value]
 			}
 		},
 		watch: {

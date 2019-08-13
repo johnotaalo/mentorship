@@ -124,6 +124,7 @@ class Form {
 
     let data = this.data()
     let formData = this.objectToFormData(data)
+    console.log(formData)
     // let data = this.originalData;
 
     if (requestType === 'put' || requestType === 'patch') {

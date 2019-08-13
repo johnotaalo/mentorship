@@ -2751,7 +2751,12 @@ __webpack_require__.r(__webpack_exports__);
         facility: '',
         county: '',
         subcounty: '',
-        workstation: ''
+        workstation: '',
+        period_month: '',
+        period_year: '',
+        mentor: {
+          value: ""
+        }
       }),
       modal: {
         site: "",
@@ -2770,6 +2775,7 @@ __webpack_require__.r(__webpack_exports__);
     this.getSkills();
     this.getSites();
     this.getResources();
+    this.getCases();
   },
   methods: {
     getMentors: function getMentors() {
@@ -2822,13 +2828,7 @@ __webpack_require__.r(__webpack_exports__);
           skillsMap[skill.site_id].push(skill);
         });
 
-        _this4.skills = skillsMap; // console.log(skillsMap)
-        // this.skills = _.map(res.data, (skill) => {
-        // 	return {
-        // 		value: skill.id,
-        // 		label: skill.topic
-        // 	}
-        // })
+        _this4.skills = skillsMap;
       });
     },
     getExpectedOutcomes: function getExpectedOutcomes() {
@@ -2850,7 +2850,7 @@ __webpack_require__.r(__webpack_exports__);
         _this6.sites = _.map(res.data, function (site) {
           return {
             value: site.id,
-            text: site.site
+            label: site.site
           };
         });
       });
@@ -2867,11 +2867,23 @@ __webpack_require__.r(__webpack_exports__);
         });
       });
     },
-    getSubcounties: function getSubcounties(county_id) {
+    getCases: function getCases() {
       var _this8 = this;
 
+      axios.get('/api/data/cases').then(function (res) {
+        _this8.cases = _.map(res.data, function (casex) {
+          return {
+            value: casex.id,
+            label: casex["case"]
+          };
+        });
+      });
+    },
+    getSubcounties: function getSubcounties(county_id) {
+      var _this9 = this;
+
       axios.get("/api/data/subcounties/".concat(county_id)).then(function (res) {
-        _this8.subcounties = _.map(res.data, function (subcounty) {
+        _this9.subcounties = _.map(res.data, function (subcounty) {
           return {
             value: subcounty.subcounty_id,
             text: subcounty.subcounty
@@ -2883,7 +2895,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$refs['modal-add-activity'].show();
     },
     manageModalData: function manageModalData() {
-      var _this9 = this;
+      var _this10 = this;
 
       var data = {};
       this.form.activities.push(data);
@@ -2892,10 +2904,16 @@ __webpack_require__.r(__webpack_exports__);
         data[key] = value;
 
         if (Array.isArray(value)) {
-          _this9.modal[key] = [];
+          _this10.modal[key] = [];
         } else {
-          _this9.modal[key] = "";
+          _this10.modal[key] = "";
         }
+      });
+    },
+    addData: function addData() {
+      alert('clicked');
+      this.form.post('/data/workplan').then(function (res) {
+        console.log(res);
       });
     }
   },
@@ -2911,7 +2929,7 @@ __webpack_require__.r(__webpack_exports__);
       return [];
     },
     filteredSkills: function filteredSkills() {
-      return this.skills[this.modal.site];
+      return this.skills[this.modal.site.value];
     }
   },
   watch: {
@@ -76164,11 +76182,11 @@ var render = function() {
                           ]
                         },
                         model: {
-                          value: _vm.selectedMonth,
+                          value: _vm.form.period_month,
                           callback: function($$v) {
-                            _vm.selectedMonth = $$v
+                            _vm.$set(_vm.form, "period_month", $$v)
                           },
-                          expression: "selectedMonth"
+                          expression: "form.period_month"
                         }
                       },
                       [
@@ -76198,11 +76216,11 @@ var render = function() {
                       {
                         attrs: { options: ["2018", "2019"] },
                         model: {
-                          value: _vm.selectedYear,
+                          value: _vm.form.period_year,
                           callback: function($$v) {
-                            _vm.selectedYear = $$v
+                            _vm.$set(_vm.form, "period_year", $$v)
                           },
-                          expression: "selectedYear"
+                          expression: "form.period_year"
                         }
                       },
                       [
@@ -76244,11 +76262,11 @@ var render = function() {
                           placeholder: "Click to Enter"
                         },
                         model: {
-                          value: _vm.mentor,
+                          value: _vm.form.mentor,
                           callback: function($$v) {
-                            _vm.mentor = $$v
+                            _vm.$set(_vm.form, "mentor", $$v)
                           },
-                          expression: "mentor"
+                          expression: "form.mentor"
                         }
                       })
                 ],
@@ -76265,11 +76283,11 @@ var render = function() {
                       placeholder: "Info Not Provided (Click to Enter)"
                     },
                     model: {
-                      value: _vm.mentor.value.phone,
+                      value: _vm.form.mentor.value.phone,
                       callback: function($$v) {
-                        _vm.$set(_vm.mentor.value, "phone", $$v)
+                        _vm.$set(_vm.form.mentor.value, "phone", $$v)
                       },
-                      expression: "mentor.value.phone"
+                      expression: "form.mentor.value.phone"
                     }
                   })
                 ],
@@ -76286,11 +76304,11 @@ var render = function() {
                       placeholder: "Info Not Provided (Click to Enter)"
                     },
                     model: {
-                      value: _vm.mentor.value.email,
+                      value: _vm.form.mentor.value.email,
                       callback: function($$v) {
-                        _vm.$set(_vm.mentor.value, "email", $$v)
+                        _vm.$set(_vm.form.mentor.value, "email", $$v)
                       },
-                      expression: "mentor.value.email"
+                      expression: "form.mentor.value.email"
                     }
                   })
                 ],
@@ -76345,79 +76363,82 @@ var render = function() {
           _c("table", { staticClass: "table table-bordered" }, [
             _vm._m(0),
             _vm._v(" "),
-            _c(
-              "tbody",
-              _vm._l(_vm.form.activities, function(row, index) {
-                return _c("tr", { key: index }, [
-                  _c("td", [
-                    _vm._v("\n\t\t\t\t\t\t" + _vm._s(row.site) + "\n\t\t\t\t\t")
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "td",
-                    _vm._l(row.mentees, function(item) {
-                      return _c("p", [
+            _vm.form.activities
+              ? _c(
+                  "tbody",
+                  _vm._l(_vm.form.activities, function(row, index) {
+                    return _c("tr", { key: index }, [
+                      _c("td", [
                         _vm._v(
-                          _vm._s(item.mentee_no) +
-                            " - " +
-                            _vm._s(item.mentee_cadre)
+                          "\n\t\t\t\t\t\t" +
+                            _vm._s(row.site.label) +
+                            "\n\t\t\t\t\t"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _vm._v(
+                          "\n\t\t\t\t\t\t" +
+                            _vm._s(row.sessions) +
+                            " sessions\n\t\t\t\t\t"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c(
+                          "ol",
+                          _vm._l(row.cases, function(item) {
+                            return _c("li", [_vm._v(_vm._s(item.label))])
+                          }),
+                          0
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c(
+                          "ol",
+                          _vm._l(row.skills, function(item) {
+                            return _c("li", [_vm._v(_vm._s(item.topic))])
+                          }),
+                          0
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c(
+                          "ol",
+                          _vm._l(row.skills, function(item) {
+                            return _c("li", [
+                              _vm._v(_vm._s(item.outcome.outcome))
+                            ])
+                          }),
+                          0
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c(
+                          "ol",
+                          _vm._l(row.resources, function(item) {
+                            return _c("li", [_vm._v(_vm._s(item.label))])
+                          }),
+                          0
                         )
                       ])
-                    }),
-                    0
-                  ),
-                  _vm._v(" "),
-                  _c("td", [
-                    _vm._v(
-                      "\n\t\t\t\t\t\t" +
-                        _vm._s(row.sessions) +
-                        " sessions\n\t\t\t\t\t"
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
+                    ])
+                  }),
+                  0
+                )
+              : _c("tbody", [
+                  _c("tr", [
                     _c(
-                      "ol",
-                      _vm._l(row.cases, function(item) {
-                        return _c("li", [_vm._v(_vm._s(item))])
-                      }),
-                      0
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c(
-                      "ol",
-                      _vm._l(row.skills, function(item) {
-                        return _c("li", [_vm._v(_vm._s(item))])
-                      }),
-                      0
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c(
-                      "ol",
-                      _vm._l(row.resources, function(item) {
-                        return _c("li", [_vm._v(_vm._s(item))])
-                      }),
-                      0
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c(
-                      "ol",
-                      _vm._l(row.expectedOutcomes, function(item) {
-                        return _c("li", [_vm._v(_vm._s(item.outcome))])
-                      }),
-                      0
+                      "td",
+                      { attrs: { colspan: "6" } },
+                      [_c("center", [_vm._v("Click Add Row to add activity")])],
+                      1
                     )
                   ])
                 ])
-              }),
-              0
-            )
           ]),
           _vm._v(" "),
           _c(
@@ -76426,7 +76447,29 @@ var render = function() {
               attrs: { size: "sm", variant: "primary" },
               on: { click: _vm.showAddActivityModal }
             },
-            [_vm._v("Add Row")]
+            [
+              _c("i", {
+                staticClass: "align-left",
+                attrs: { "data-feather": "plus" }
+              }),
+              _vm._v(" Add Row")
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "b-button",
+            {
+              staticClass: "float-right",
+              attrs: { size: "sm", variant: "primary" },
+              on: { click: _vm.addData }
+            },
+            [
+              _c("i", {
+                staticClass: "align-left",
+                attrs: { "data-feather": "save" }
+              }),
+              _vm._v(" Save Data")
+            ]
           )
         ],
         1
@@ -76448,7 +76491,7 @@ var render = function() {
                 _c("strong", [_vm._v("Site / Service Delivery Area")])
               ]),
               _vm._v(" "),
-              _c("b-select", {
+              _c("v-select", {
                 attrs: { options: _vm.sites },
                 model: {
                   value: _vm.modal.site,
@@ -76554,6 +76597,20 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "form-group row" }, [
+            _c("div", { staticClass: "col-md" }, [
+              _c("label", [_vm._v("Expected Outcome")]),
+              _vm._v(" "),
+              _c(
+                "ul",
+                _vm._l(_vm.modal.skills, function(skill) {
+                  return _c("li", [_vm._v(_vm._s(skill.outcome.outcome))])
+                }),
+                0
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group row" }, [
             _c(
               "div",
               { staticClass: "col-md" },
@@ -76570,62 +76627,6 @@ var render = function() {
                     expression: "modal.resources"
                   }
                 })
-              ],
-              1
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group row" }, [
-            _c(
-              "div",
-              { staticClass: "col-md" },
-              [
-                _c("label", [_vm._v("Expected Outcomes")]),
-                _vm._v(" "),
-                _c(
-                  "b-button",
-                  {
-                    staticClass: "float-right",
-                    attrs: { size: "sm" },
-                    on: {
-                      click: function($event) {
-                        return _vm.addRow(_vm.modal.expectedOutcomes)
-                      }
-                    }
-                  },
-                  [_vm._v("Add Outcome")]
-                ),
-                _vm._v(" "),
-                _vm.modal.expectedOutcomes.length > 0
-                  ? _c(
-                      "div",
-                      { staticClass: "mt-2" },
-                      _vm._l(_vm.modal.expectedOutcomes, function(row, index) {
-                        return _c("expected-outcome", {
-                          key: index,
-                          attrs: { index: index },
-                          on: {
-                            remove: function($event) {
-                              return _vm.removeRow(
-                                $event,
-                                _vm.modal.expectedOutcomes
-                              )
-                            }
-                          },
-                          model: {
-                            value: _vm.modal.expectedOutcomes[index],
-                            callback: function($$v) {
-                              _vm.$set(_vm.modal.expectedOutcomes, index, $$v)
-                            },
-                            expression: "modal.expectedOutcomes[index]"
-                          }
-                        })
-                      }),
-                      1
-                    )
-                  : _c("div", [
-                      _c("p", [_c("center", [_vm._v("No outcomes added")])], 1)
-                    ])
               ],
               1
             )
@@ -97477,6 +97478,7 @@ __webpack_require__.r(__webpack_exports__);
  */
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
+window.instance = __webpack_require__(/*! ./http */ "./resources/js/http.js");
 
 
 
@@ -98175,7 +98177,8 @@ function () {
       //     console.log(pair[0] + ': ' + pair[1]);
       // }
       var data = this.data();
-      var formData = this.objectToFormData(data); // let data = this.originalData;
+      var formData = this.objectToFormData(data);
+      console.log(formData); // let data = this.originalData;
 
       if (requestType === 'put' || requestType === 'patch') {
         data['_method'] = requestType;
@@ -98224,6 +98227,33 @@ function () {
 }();
 
 /* harmony default export */ __webpack_exports__["default"] = (Form);
+
+/***/ }),
+
+/***/ "./resources/js/http.js":
+/*!******************************!*\
+  !*** ./resources/js/http.js ***!
+  \******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
+var instance = axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
+  baseURL: '/api'
+});
+instance.interceptors.request.use(function (config) {
+  NProgress.start();
+  return config;
+});
+instance.interceptors.response.use(function (response) {
+  NProgress.done();
+  return response;
+});
+/* harmony default export */ __webpack_exports__["default"] = (instance);
 
 /***/ }),
 

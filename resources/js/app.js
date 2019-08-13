@@ -5,6 +5,7 @@
  */
 
 require('./bootstrap');
+window.instance = require('./http')
 
 import router from './router'
 import appEvent from './core/AppEvent'
