@@ -3814,6 +3814,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3844,7 +3860,8 @@ __webpack_require__.r(__webpack_exports__);
         last_name: "Mentor 3",
         county: "Kisumu",
         cycle: "November 2018"
-      }]
+      }],
+      options: {}
     };
   },
   created: function created() {
@@ -78151,7 +78168,59 @@ var render = function() {
                   url: "/data/workplans",
                   columns: _vm.fields,
                   options: _vm.options
-                }
+                },
+                scopedSlots: _vm._u([
+                  {
+                    key: "name",
+                    fn: function(data) {
+                      return [
+                        _vm._v(
+                          "\n\t\t\t\t\t\t" +
+                            _vm._s(data.row.mentor.name) +
+                            "\n\t\t\t\t\t"
+                        )
+                      ]
+                    }
+                  },
+                  {
+                    key: "county",
+                    fn: function(data) {
+                      return [
+                        _vm._v(
+                          "\n\t\t\t\t\t\t" +
+                            _vm._s(data.row.county.county) +
+                            "\n\t\t\t\t\t"
+                        )
+                      ]
+                    }
+                  },
+                  {
+                    key: "facility",
+                    fn: function(data) {
+                      return [
+                        _vm._v(
+                          "\n\t\t\t\t\t\t" +
+                            _vm._s(data.row.venue.facility_name) +
+                            "\n\t\t\t\t\t"
+                        )
+                      ]
+                    }
+                  },
+                  {
+                    key: "cycle",
+                    fn: function(data) {
+                      return [
+                        _vm._v(
+                          "\n\t\t\t\t\t\t" +
+                            _vm._s(data.row.period_month) +
+                            " " +
+                            _vm._s(data.row.period_year) +
+                            "\n\t\t\t\t\t"
+                        )
+                      ]
+                    }
+                  }
+                ])
               })
             ],
             1

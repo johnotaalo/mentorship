@@ -16,7 +16,23 @@
 							<b-button size="sm" variant="warning" @click="viewWorkplan(data.item.id)">View</b-button>
 						</template>
 					</b-table> -->
-					<v-server-table url="/data/workplans" :columns="fields" :options="options"></v-server-table>
+					<v-server-table url="/data/workplans" :columns="fields" :options="options">
+						<template slot="name" slot-scope="data">
+							{{ data.row.mentor.name }}
+						</template>
+
+						<template slot='county' slot-scope="data">
+							{{ data.row.county.county }}
+						</template>
+
+						<template slot='facility' slot-scope="data">
+							{{ data.row.venue.facility_name }}
+						</template>
+
+						<template slot="cycle" slot-scope="data">
+							{{ data.row.period_month }} {{ data.row.period_year }}
+						</template>
+					</v-server-table>
 				</div>
 			</div>
 		</b-card>
@@ -37,7 +53,8 @@
 					{ id: 1, first_name: "Sample", last_name: "Mentor", county: "Nairobi", cycle: "June 2019" },
 					{ id: 2, first_name: "Sample", last_name: "Mentor 2", county: "Kakamega", cycle: "June 2019" },
 					{ id: 3, first_name: "Sample", last_name: "Mentor 3", county: "Kisumu", cycle: "November 2018" }
-				]
+				],
+				options: {}
 			}
 		},
 		created(){

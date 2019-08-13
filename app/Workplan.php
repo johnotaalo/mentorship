@@ -8,7 +8,7 @@ class Workplan extends Model
 {
     protected $fillable = ["subcounty_id", "period_month", "period_year", "mentor_id", "mentor_venue", "mentor_work_station", "created_by"];
 
-    // protected $appends = ['county'];
+    protected $appends = ['county'];
 
     public function subcounty(){
     	return $this->belongsTo(\App\Subcounty::class, "subcounty_id", "subcounty_id");
@@ -26,7 +26,7 @@ class Workplan extends Model
     	return $this->belongsTo(\App\Facility::class, "mentor_work_station", "survey_cto_id");
     }
 
-    // public function getCountyAttribute(){
-    // 	return $this->subcounty();
-    // }
+    public function getCountyAttribute(){
+    	return \App\Subcounty::where('subcounty_id', $this->subcounty_id)->first()->county;
+    }
 }
