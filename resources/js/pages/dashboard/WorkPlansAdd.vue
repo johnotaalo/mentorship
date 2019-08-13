@@ -272,7 +272,7 @@
 		},
 		methods: {
 			getMentors: function(){
-				axios.get('/api/data/mentors-data')
+				axios.get('/data/mentors-data')
 				.then(res => {
 					this.mentors = _.map(res.data, (mentor) => {
 						return {
@@ -283,7 +283,7 @@
 				});
 			},
 			getCounties: function(){
-				axios.get('/api/data/counties')
+				axios.get('/data/counties')
 				.then(res => {
 					this.counties = _.map(res.data, (county) => {
 						return {
@@ -295,7 +295,7 @@
 			},
 
 			getFacilities(county_id){
-				axios.get(`/api/data/facilities/${county_id}`)
+				axios.get(`/data/facilities/${county_id}`)
 				.then(res => {
 					this.facilities = _.map(res.data, (facility) => {
 						return {
@@ -307,7 +307,7 @@
 			},
 
 			getSkills(){
-				axios.get(`api/data/skills`)
+				axios.get(`/data/skills`)
 				.then(res => {
 					var skillsMap = {}
 					_.forOwn(res.data, (skill) => {
@@ -322,7 +322,7 @@
 			},
 
 			getExpectedOutcomes(){
-				axios.get('api/data/outcomes')
+				axios.get('/data/outcomes')
 				.then(res => {
 					this.expectedOutcomes = _.map(res.data, (outcome) => {
 						return {
@@ -334,7 +334,7 @@
 			},
 
 			getSites(){
-				axios.get('api/data/sites')
+				axios.get('/data/sites')
 				.then(res => {
 					this.sites = _.map(res.data, (site) => {
 						return {
@@ -346,7 +346,7 @@
 			},
 
 			getResources(){
-				axios.get('/api/data/resources')
+				axios.get('/data/resources')
 				.then(res => {
 					this.resources = _.map(res.data, (resource) => {
 						return {
@@ -358,7 +358,7 @@
 			},
 
 			getCases(){
-				axios.get('/api/data/cases')
+				axios.get('/data/cases')
 				.then(res => {
 					this.cases = _.map(res.data, (casex) => {
 						return {
@@ -370,7 +370,7 @@
 			},
 
 			getSubcounties(county_id){
-				axios.get(`/api/data/subcounties/${county_id}`)
+				axios.get(`/data/subcounties/${county_id}`)
 				.then(res => {
 					this.subcounties = _.map(res.data, (subcounty) => {
 						return {

@@ -30,6 +30,10 @@
 						</ul>
 					</li>
 
+					 <li class="sidebar-item" v-if="$auth.check()">
+						<a class="sidebar-link" href="#" @click.prevent="logout()">Logout</a>
+					</li>
+
 					<!-- <li class="sidebar-item">
 						<router-link class="sidebar-link" :to="{ name: 'dashboard.workplans' }"><i class="align-middle" data-feather="book"></i> <span class="align-middle">Workplans</span></router-link>
 					</li> -->
@@ -39,7 +43,7 @@
 					<div class="media">
 						<img class="rounded-circle mr-3" src="/dashboard/img/empty-profile.svg" alt="Chris Wood" width="40" height="40">
 						<div class="media-body">
-							<h5 class="mb-1">Sample Admin</h5>
+							<h5 class="mb-1">{{ $auth.user().name }}</h5>
 							<div>
 								<i class="fas fa-circle text-success"></i> Online
 							</div>
@@ -50,3 +54,21 @@
 			</div>
 		</nav>
 </template>
+
+<script type="text/javascript">
+	export default {
+		methods: {
+			logout: function(){
+				this.$auth.logout({
+					success: function(res){
+						this.$toastr.success(res.data.msg, "Logged Out");
+						this.$router.push({name: 'login'});
+					},
+					error: function(){
+						this.$toastr.error("Couldn't log you out", "Error");
+					}
+				})
+			}
+		}
+	}
+</script>

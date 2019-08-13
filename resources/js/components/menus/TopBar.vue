@@ -12,7 +12,7 @@
 						</a>
 
 						<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-toggle="dropdown">
-							<img src="/dashboard/img/empty-profile.svg" class="avatar img-fluid rounded-circle mr-1" alt="Sample Admin" /> <span class="text-dark">Sample Admin</span>
+							<img src="/dashboard/img/empty-profile.svg" class="avatar img-fluid rounded-circle mr-1" alt="Sample Admin" /> <span class="text-dark">{{ $auth.user().name }}</span>
 						</a>
 						<div class="dropdown-menu dropdown-menu-right">
 							<a class="dropdown-item" href="pages-profile.html"><i class="align-middle mr-1" data-feather="user"></i> Profile</a>

@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<loading :active.sync="isLoading" :can-cancel="true" :is-full-page="fullPage"></loading>
 		<b-form @submit="login">
 			<b-form-group
 				label="Email address:">
@@ -21,7 +22,13 @@
 		data(){
 			return {
 				email: '',
-				password: ''
+				password: '',
+				isLoading: false,
+				fullPage: false,
+				has_error: false,
+				toastrOptions: {
+					"positionClass": "toast-top-center"
+				}
 			}
 		},
 		created(){
@@ -31,17 +38,24 @@
 			login(){
 				var redirect = this.$auth.redirect()
 				var app = this
+
+				app.isLoading = true
 				this.$auth.login({
-					params: {
+					data: {
 						email: app.email,
 						password: app.password
 					},
 					success: function() {
+						app.isLoading = false
 						// handle redirection
 						const redirectTo = redirect ? redirect.from.name : 'dashboard.index'
+						this.$toastr.success('Successfully logged in', 'All Set!', app.toastrOptions);
+						this.$router.push({name: redirectTo})
 					},
 					error: function() {
+						app.isLoading = false
 						app.has_error = true
+						this.$toastr.success('Incorrect Email or Password', 'Error', app.toastrOptions);
 					},
 					rememberMe: true,
 					fetchUser: true

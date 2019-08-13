@@ -1,8 +1,10 @@
 window._ = require('lodash');
 
 import Vue from 'vue'
+import Loading from 'vue-loading-overlay';
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'vue-loading-overlay/dist/vue-loading.css';
 import {ServerTable, ClientTable, Event} from 'vue-tables-2';
 
 window.Vue = Vue
@@ -10,6 +12,9 @@ window.Vue = Vue
 
 Vue.use(BootstrapVue)
 Vue.use(ServerTable);
+Vue.use(Loading)
+
+Vue.component('loading', Loading)
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
  * for JavaScript based Bootstrap features such as modals and tabs. This
