@@ -9,41 +9,47 @@ import WorkPlans from './pages/dashboard/WorkPlans'
 import WorkPlansAdd from './pages/dashboard/WorkPlansAdd'
 import WorkPlansView from './pages/dashboard/WorkPlansView'
 import TestComponent from './pages/test/TestComponent'
+import Login from './pages/auth/Login'
 
 let routes = [{
 		name: 'dashboard.index',
 		path: '/',
 		component: DashboardHome,
 		meta: {
-			title: 'Dashboard'
+			title: 'Dashboard',
+			auth: true
 		}
 	},{
 		name: 'dashboard.hcwlist',
 		path: '/hcw/list',
 		component: HCWList,
 		meta: {
-			title: 'HCW List'
+			title: 'HCW List',
+			auth: true
 		}
 	},{
 		name: 'dashboard.workplans',
 		path: '/workplans',
 		component: WorkPlans,
 		meta: {
-			title: 'Work Plans'
+			title: 'Work Plans',
+			auth: true
 		}
 	},{
 		name: 'dashboard.workplans.add',
 		path: '/workplans/add/:id?',
 		component: WorkPlansAdd,
 		meta: {
-			title: 'Add Work Plan'
+			title: 'Add Work Plan',
+			auth: true
 		}
 	},{
 		name: 'dashboard.workplans.view',
 		path: '/workplans/view/:id',
 		component: WorkPlansView,
 		meta: {
-			title: 'View Work Plan'
+			title: 'View Work Plan',
+			auth: true
 		}
 	},
 	{
@@ -51,7 +57,17 @@ let routes = [{
 		path: '/test',
 		component: TestComponent,
 		meta: {
-			title: 'Test Component'
+			title: 'Test Component',
+			auth: true
+		}
+	},
+	{
+		path: '/login',
+		name: 'login',
+		component: Login,
+		meta: {
+			title: 'Login Page',
+			auth: false
 		}
 	}
 ];

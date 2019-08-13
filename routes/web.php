@@ -10,5 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', 'Dashboard\HomeController@index');
+// Route::get('/login', 'Auth\LoginController');
+// Route::get('/', 'Dashboard\HomeController@index');
+Route::get('/{any?}', 'Dashboard\HomeController@index')->where('any', '^(?!api\/)[\/\w\.-]*');

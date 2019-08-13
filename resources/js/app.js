@@ -6,7 +6,10 @@
 
 require('./bootstrap');
 window.instance = require('./http')
+import VueAuth from '@websanova/vue-auth'
+import VueAxios from 'vue-axios'
 
+import auth from './auth'
 import router from './router'
 import appEvent from './core/AppEvent'
 import vSelect from 'vue-select'
@@ -35,6 +38,10 @@ Vue.component('v-select', vSelect)
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+Vue.router = router
+Vue.use(VueAxios, axios)
+axios.defaults.baseURL = `${process.env.MIX_APP_URL}/api`
+Vue.use(VueAuth, auth)
 
 const app = new Vue({
     el: '#app',

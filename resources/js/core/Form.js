@@ -124,7 +124,6 @@ class Form {
 
     let data = this.data()
     let formData = this.objectToFormData(data)
-    console.log(formData)
     // let data = this.originalData;
 
     if (requestType === 'put' || requestType === 'patch') {
@@ -147,7 +146,7 @@ class Form {
         // app.$store.commit('loadingOff')
       }).catch((error) => {
         // alert(error);
-        // console.log(error.response);
+        console.log(error);
         this.onFail(error)
         reject(error.response.data)
         // app.$store.commit('loadingOff')

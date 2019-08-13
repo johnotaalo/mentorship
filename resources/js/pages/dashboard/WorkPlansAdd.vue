@@ -396,10 +396,10 @@
 				})
 			},
 			addData: function(){
-				alert('clicked');
+				var em = this
 				this.form.post('/data/workplan')
 				.then(res => {
-					console.log(res)
+					em.$router.push({ name: 'dashboard.workplans' });
 				})
 			}
 		},

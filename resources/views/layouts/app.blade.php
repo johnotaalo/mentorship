@@ -15,7 +15,8 @@
 	<!-- PICK ONE OF THE STYLES BELOW -->
 	<!-- <link href="{{ asset('dashboard/css/classic.css') }}" rel="stylesheet"> -->
 	<!-- <link href="{{ asset('dashboard/css/corporate.css') }}" rel="stylesheet"> -->
-	
+	<link rel="stylesheet" type="text/css" href="{{ asset('themes/nprogress/nprogress.css') }}">
+    <script type="text/javascript" src="{{ asset('themes/nprogress/nprogress.js') }}"></script>
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
 	<link href="{{ asset('dashboard/css/modern.css') }}" rel="stylesheet">
 	<!-- BEGIN SETTINGS -->
