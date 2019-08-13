@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class ExpectedOutcome extends Model
 {
-    protected $fillable = ['site_id','outcome','indicate'];
+    protected $fillable = ['topics_id','outcome','indicate'];
 }

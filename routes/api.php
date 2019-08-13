@@ -25,4 +25,6 @@ Route::prefix('data')->group(function(){
 	Route::get('facilities/{subcounty?}', 'API\FacilityController@get');
 
 	Route::get('skills', 'API\MentorsController@getSkills');
+	Route::get('sites', 'API\MentorsController@getSites');
+	Route::get('resources', 'API\MentorsController@getResources');
 });

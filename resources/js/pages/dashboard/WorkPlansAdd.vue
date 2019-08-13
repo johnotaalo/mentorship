@@ -180,7 +180,12 @@
 			<div class="form-group row">
 				<div class="col-md">
 					<label>Skills to be mentored</label>
-					<v-select v-model = "modal.skills" :options="skills" multiple></v-select>
+					<v-select v-model = "modal.skills" :options="filteredSkills" multiple label="topic">
+						<template slot="option" slot-scope="option">
+							<!-- <span :class="option.icon"></span> -->
+							{{ option.topic }}
+						</template>
+					</v-select>
 				</div>
 			</div>
 
@@ -256,6 +261,8 @@
 			this.getCounties()
 			this.getMentors()
 			this.getSkills()
+			this.getSites()
+			this.getResources()
 		},
 		methods: {
 			getMentors: function(){
@@ -296,12 +303,23 @@
 			getSkills(){
 				axios.get(`api/data/skills`)
 				.then(res => {
-					this.skills = _.map(res.data, (skill) => {
-						return {
-							value: skill.id,
-							label: skill.topic
+					var skillsMap = {}
+					_.forOwn(res.data, (skill) => {
+						if(typeof skillsMap[skill.site_id] === "undefined"){
+							skillsMap[skill.site_id] = []
 						}
+						skillsMap[skill.site_id].push(skill)
 					})
+
+					this.skills = skillsMap
+
+					// console.log(skillsMap)
+					// this.skills = _.map(res.data, (skill) => {
+					// 	return {
+					// 		value: skill.id,
+					// 		label: skill.topic
+					// 	}
+					// })
 				});
 			},
 
@@ -312,6 +330,30 @@
 						return {
 							value: outcome.id,
 							label: outcome.outcome
+						}
+					})
+				})
+			},
+
+			getSites(){
+				axios.get('api/data/sites')
+				.then(res => {
+					this.sites = _.map(res.data, (site) => {
+						return {
+							value: site.id,
+							text: site.site
+						}
+					})
+				})
+			},
+
+			getResources(){
+				axios.get('/api/data/resources')
+				.then(res => {
+					this.resources = _.map(res.data, (resource) => {
+						return {
+							value: resource.id,
+							label: resource.resource
 						}
 					})
 				})
@@ -354,6 +396,9 @@
 			},
 			mentorsList: function(){
 				return []
+			},
+			filteredSkills: function(){
+				return this.skills[this.modal.site]
 			}
 		},
 		watch: {

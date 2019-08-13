@@ -51,7 +51,17 @@ class MentorsController extends Controller
         return $skills;
     }
 
+    function getSites(){
+        $sites = \App\SiteRef::all();
+
+        return $sites;
+    }
+
     function getData(){
         return \App\Mentor::orderBy('name', 'ASC')->get();
+    }
+
+    function getResources(){
+        return \App\Resource::all();
     }
 }
