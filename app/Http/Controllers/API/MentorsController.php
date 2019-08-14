@@ -62,7 +62,7 @@ class MentorsController extends Controller
     }
 
     function getResources(){
-        return \App\Resource::all();
+        return \App\Resource::orderBy('resource')->get();
     }
 
     function getCases(){

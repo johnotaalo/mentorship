@@ -38,7 +38,7 @@
 <script type="text/javascript">
 	export default {
 		created(){
-			console.log(this.$route)
+			// console.log(this.$route)
 		},
 		computed: {
 			showMenus: function(){

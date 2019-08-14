@@ -1,36 +1,58 @@
 <template>
 	<div class="card">
 		<div class="card-body">
+			<!-- <b-select :options="filteredSites"></b-select> -->
 			<center><h4><strong>ETAT + TOT MENTORSHIP WORKPLAN</strong></h4></center>
 			<div class="row">
 				<div class="col-md">
 					<strong>County Name: </strong>
 					<span v-if="!searchable">{{ mentor.county }}</span>
-					<b-select v-model="form.county" :options="counties" v-else></b-select>
+					<b-form-group id="county-input-group" v-else>
+						<b-select id="county-input" name = "county-input" v-validate="{ required: true }" :state="validateState('county-input')" v-model="form.county" :options="counties" aria-describedby="county-input-live-feedback"></b-select>
+
+						<b-form-invalid-feedback id="county-input-live-feedback">
+							This is a required field
+						</b-form-invalid-feedback>
+					</b-form-group>
 				</div>
 
 				<div class="col-md">
 					<strong>Sub County Name: </strong>
 					<span v-if="!searchable">{{ mentor.county }}</span>
-					<b-select v-model="form.subcounty" :options="subcounties" v-else></b-select>
+					<b-form-group id="subcounty-input-group" v-else>
+						<b-select id="subcounty-input" name = "subcounty-input" v-validate="{ required: true }" :state="validateState('subcounty-input')" v-model="form.subcounty" :options="subcounties" aria-describedby="subcounty-input-live-feedback"></b-select>
+						<b-form-invalid-feedback id="subcounty-input-live-feedback">
+							This is a required field
+						</b-form-invalid-feedback>
+					</b-form-group>
 				</div>
 
 				<div class="col-md">
 					<b>Mentorship Period</b>
 					<div class="row">
 						<div class="col-md">
-							<b-select v-model="form.period_month" :options="['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']">
-								<template slot="first">
-									<option :value="null" disabled>Select Month</option>
-								</template>
-							</b-select>
+							<b-form-group id="month-input-group">
+								<b-select id="month-input" name = "month-input" v-validate="{ required: true }" :state="validateState('month-input')" v-model="form.period_month" :options="['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']" aria-describedby="month-input-live-feedback">
+									<template slot="first">
+										<option :value="null" disabled>Select Month</option>
+									</template>
+								</b-select>
+								<b-form-invalid-feedback id="month-input-live-feedback">
+									This is a required field
+								</b-form-invalid-feedback>
+							</b-form-group>
 						</div>
 						<div class="col-md">
-							<b-select v-model="form.period_year" :options="['2018', '2019']">
-								<template slot="first">
-									<option :value="null" disabled>Select Year</option>
-								</template>
-							</b-select>
+							<b-form-group id="year-input-group">
+								<b-select id="year-input" name = "year-input" v-validate="{ required: true }" :state="validateState('year-input')" v-model="form.period_year" :options="['2018', '2019']" aria-describedby="year-input-live-feedback">
+									<template slot="first">
+										<option :value="null" disabled>Select Year</option>
+									</template>
+								</b-select>
+								<b-form-invalid-feedback id="year-input-live-feedback">
+									This is a required field
+								</b-form-invalid-feedback>
+							</b-form-group>
 						</div>
 					</div>
 				</div>
@@ -45,22 +67,51 @@
 						<b>Mentor Name: </b>
 						<span v-if="!searchable">{{ mentor.hcw_name }}</span>
 						<!-- <b-select v-model="mentor" :options="mentors" v-else></b-select> -->
-						<v-select v-model="form.mentor" :options="mentors" placeholder="Click to Enter" v-else></v-select>
+						<b-form-group id="mentor-input-group" v-else>
+							<v-select v-model="form.mentor" :options="mentors" placeholder="Click to Enter" v-validate:mentor="{required: true}" name="mentor" :class="{ danger: veeErrors.has('mentor') }">
+							</v-select>
+							<span v-show="veeErrors.has('mentor')" class="danger">
+							{{ veeErrors.first('mentor') }}
+							</span>
+						</b-form-group>
 					</td>
 					<td>
 						<b>Mentor Contact Number: </b>
-						<b-input v-model = "form.mentor.value.phone" placeholder="Info Not Provided (Click to Enter)"></b-input>
+						<b-form-group id="mentor-phone-input-group">
+							<b-input id="mentor-phone-input" name = "mentor-phone-input" v-validate="{ required: true, regex: /^0(7(?:(?:[129][0-9])|(?:0[0-8])|(4[0-1]))[0-9]{6})$/ }" :state="validateState('mentor-phone-input')" v-model = "form.mentor.value.phone" placeholder="Info Not Provided (Click to Enter)" aria-describedby="mentor-phone-input-live-feedback"></b-input>
+							<b-form-invalid-feedback id="mentor-phone-input-live-feedback">
+								This is a required field. Format is 07XXXXXXXX
+							</b-form-invalid-feedback>
+						</b-form-group>
 					</td>
 					<td>
 						<b>Mentor Email Address: </b>
-						<b-input v-model = "form.mentor.value.email" placeholder="Info Not Provided (Click to Enter)"></b-input>
+						<b-form-group id="mentor-email-input-group">
+							<b-input id="mentor-email-input" name = "mentor-email-input" v-validate="{required: true, email: true}" :state="validateState('mentor-email-input')" v-model = "form.mentor.value.email" placeholder="Info Not Provided (Click to Enter)" aria-describedby="mentor-email-input-live-feedback"></b-input>
+							<b-form-invalid-feedback id="mentor-email-input-live-feedback">
+								This is a required field and should be a valid email address
+							</b-form-invalid-feedback>
+						</b-form-group>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2">
-						<b>Health Facility Name (Mentorship Venue):</b> <b-select :options="facilities" v-model = "form.facility"></b-select></td>
+						<b-form-group id="venue-input-group">
+							<b>Health Facility Name (Mentorship Venue):</b> 
+							<b-select id="venue-input" name = "venue-input" v-validate="{ required: true }" :state="validateState('venue-input')" :options="facilities" v-model = "form.facility" aria-describedby="venue-input-live-feedback"></b-select>
+							<b-form-invalid-feedback id="venue-input-live-feedback">
+								This is a required field
+							</b-form-invalid-feedback>
+						</b-form-group>
+					</td>
 					<td colspan="2">
-						<b>Mentor Workstation: </b><b-select :options="facilities" v-model = "form.workstation"></b-select>
+						<b-form-group id="venue-input-group">
+							<b>Mentor Workstation: </b>
+							<b-select id="workstation-input" name = "workstation-input" v-validate="{ required: true }" :state="validateState('workstation-input')" :options="facilities" v-model = "form.workstation" aria-describedby="workstation-input-live-feedback"></b-select>
+							<b-form-invalid-feedback id="workstation-input-live-feedback">
+								This is a required field
+							</b-form-invalid-feedback>
+						</b-form-group>
 					</td>
 				</tr>
 				<tr>
@@ -72,7 +123,6 @@
 				<thead>
 					<tr>
 						<th>Site / Service Delivery Area (Indicate)</th>
-						<!-- <th>Mentee (Indicate cadre & number of pax)</th> -->
 						<th># of sections planned</th>
 						<th>Cases to be reviewed (list of cases based on audit)</th>
 						<th>Skills to be mentored (list of skills)</th>
@@ -80,7 +130,7 @@
 						<th>Resources needed</th>
 					</tr>
 				</thead>
-				<tbody v-if = "form.activities">
+				<tbody v-if = "form.activities.length">
 					<tr v-for="(row, index) in form.activities" :key="index">
 						<td>
 							{{ row.site.label }}
@@ -108,35 +158,6 @@
 								<li v-for="item in row.resources">{{ item.label }}</li>
 							</ol>
 						</td>
-						<!-- <td>
-							
-							<select name = "sites[]">
-								<option>Labor Ward</option>
-								<option>Paedriatic Ward</option>
-								<option>MCH</option>
-								<option>New Born Unit</option>
-							</select>
-						</td>
-						<td>
-							<b-form-input placeholder="xx-Clinical Officers"></b-form-input>
-						</td>
-						<td>
-							<b-input-group append="Sessions" class="mb-8 mr-sm-8 mb-sm-0">
-								<b-form-input></b-form-input>
-							</b-input-group>
-						</td>
-						<td>
-							<b-select :options="cases"></b-select>
-						</td>
-						<td>
-							<b-select :options="skills"></b-select>
-						</td>
-						<td>
-							<b-select :options="resources"></b-select>
-						</td>
-						<td>
-							<b-form-input></b-form-input>
-						</td> -->
 					</tr>
 				</tbody>
 				<tbody v-else>
@@ -147,14 +168,18 @@
 			</table>
 
 			<b-button size="sm" variant = "primary" @click="showAddActivityModal"><i class="align-left" data-feather="plus"></i>&nbsp;Add Row</b-button>
-			<b-button size="sm" variant = "primary" class="float-right" @click="addData"><i class="align-left" data-feather="save"></i>&nbsp;Save Data</b-button>
+			<!-- -->
+			<b-button v-if="form.activities.length" size="sm" variant = "primary" class="float-right" @click="addData"><i class="align-left" data-feather="save"></i>&nbsp;Save Data</b-button>
 		</div>
 
-		<b-modal ref="modal-add-activity" title="Add Activity" @ok="manageModalData">
+		<b-modal ref="modal-add-activity" title="Add Activity" @ok="manageModalData" no-close-on-backdrop>
 			<div class="form-group">
 				<label class = "label-control"><strong>Site / Service Delivery Area</strong></label>
 				<!-- <b-select :options="sites" v-model = "modal.site"></b-select> -->
-				<v-select :options="sites" v-model = "modal.site"></v-select>
+				<v-select v-validate="{ required: true }" name="site" :options="sites" v-model = "modal.site" data-vv-scope="modal"></v-select>
+				<span v-show="veeErrors.has('modal.site')" class="text-danger">
+					This is a required field
+				</span>
 			</div>
 			<!-- <div class="form-group row">
 				<div class="col-md">
@@ -170,26 +195,37 @@
 			</div> -->
 			<div class="form-group row">
 				<div class="col-md">
-					<label># of Sessions Planned</label>
-					<b-input-group append="Sessions" class="mb-8 mr-sm-8 mb-sm-0">
-						<b-form-input v-model = "modal.sessions"></b-form-input>
-					</b-input-group>
+					<b-form-group id="modal.sessions-input-group">
+						<label># of Sessions Planned</label>
+						<b-input-group append="Sessions" class="mb-8 mr-sm-8 mb-sm-0">
+							<b-form-input v-model = "modal.sessions" id="modal.sessions-input" name = "modal.sessions-input" v-validate="{ required: true, min_value: 1 }" :state="!veeErrors.has('modal.sessions-input')" aria-describedby="modal.sessions-input-live-feedback"  data-vv-scope="modal"></b-form-input>
+						</b-input-group>
+						<b-form-invalid-feedback id="modal.sessions-input-live-feedback">
+							This is a required field
+						</b-form-invalid-feedback>
+					</b-form-group>
 				</div>
 				<div class="col-md">
 					<label>Cases to be reviewed</label>
-					<v-select v-model = "modal.cases" :options="cases" multiple></v-select>
+					<v-select v-validate="{ required: true }" name="cases" v-model = "modal.cases" :options="cases" data-vv-scope="modal" multiple></v-select>
+					<span v-show="veeErrors.has('modal.cases')" class="text-danger">
+						This is a required field
+					</span>
 				</div>
 			</div>
 
 			<div class="form-group row">
 				<div class="col-md">
 					<label>Skills to be mentored</label>
-					<v-select v-model = "modal.skills" :options="filteredSkills" multiple label="topic">
+					<v-select v-validate="{ required: true }" name="skills" v-model = "modal.skills" :options="filteredSkills" data-vv-scope="modal" multiple label="topic">
 						<template slot="option" slot-scope="option">
 							<!-- <span :class="option.icon"></span> -->
 							{{ option.topic }}
 						</template>
 					</v-select>
+					<span v-show="veeErrors.has('modal.skills')" class="text-danger">
+						This is a required field
+					</span>
 				</div>
 			</div>
 
@@ -205,9 +241,16 @@
 			<div class="form-group row">
 				<div class="col-md">
 					<label>Resources needed</label>
-					<v-select v-model = "modal.resources" :options="resources" multiple></v-select>
+					<v-select  v-validate="{ required: true }" name="resources" v-model = "modal.resources" :options="resources"  data-vv-scope="modal" multiple></v-select>
+					<span v-show="veeErrors.has('modal.resources')" class="text-danger">
+						This is a required field
+					</span>
 				</div>
 			</div>
+
+			<template slot="modal-ok">
+				Add Row
+			</template>
 		</b-modal>
 	</div>
 </template>
@@ -223,7 +266,7 @@
 		data() {
 			return {
 				mentor: {
-					value: ""
+					value: {}
 				},
 				mentors: [],
 				selectedMonth: null,
@@ -248,12 +291,15 @@
 					period_month: '',
 					period_year: '',
 					mentor: {
-						value: ""
+						value: {
+							email: "",
+							phone: ""
+						}
 					}
 				}),
 				modal: {
 					site: "",
-					sessions: 0,
+					sessions: 1,
 					skills: [],
 					cases: [],
 					resources: [],
@@ -269,6 +315,11 @@
 			this.getSites()
 			this.getResources()
 			this.getCases()
+			// $(this.$refs['modal-add-activity']).on("hidden.bs.modal", console.log('hidden'))
+
+			this.$root.$on('bv::modal::hidden', (bvEvent, modalId) => {
+				this.clearModal()
+			})
 		},
 		methods: {
 			getMentors: function(){
@@ -383,11 +434,29 @@
 			showAddActivityModal: function(){
 				this.$refs['modal-add-activity'].show()
 			},
-			manageModalData: function(){
-				var data = {};
-				this.form.activities.push(data)
+			manageModalData: function(bvModalEvt){
+				bvModalEvt.preventDefault()
+				this.$validator.validateAll('modal').then((res) => {
+					if(!res){
+						return
+					}else{
+						this.$validator.reset();
+						var data = {};
+						this.form.activities.push(data)
+						_.forOwn(this.modal, (value, key) => {
+							data[key] = value
+						})
+
+						this.$nextTick(() => {
+							this.$refs['modal-add-activity'].hide()
+						})
+					}
+				})
+				
+			},
+
+			clearModal: function(){
 				_.forOwn(this.modal, (value, key) => {
-					data[key] = value
 					if(Array.isArray(value)){
 						this.modal[key] = []
 					}else{
@@ -395,12 +464,30 @@
 					}
 				})
 			},
+			validateState(ref) {
+				if (this.veeFields[ref] && (this.veeFields[ref].dirty || this.veeFields[ref].validated)) {
+					return !this.veeErrors.has(ref)
+				}
+				return null
+			},
 			addData: function(){
 				var em = this
-				this.form.post('/data/workplan')
-				.then(res => {
-					em.$router.push({ name: 'dashboard.workplans' });
+				this.$validator.validateAll().then((result) => {
+					if (!result) {
+						return
+					}
+
+					em.form.post('/data/workplan')
+					.then(res => {
+						em.$router.push({ name: 'dashboard.workplans' });
+					})
 				})
+			},
+			getUniqueValuesOfKey(array, key){
+				return array.reduce(function(carry, item){
+					if(item[key] && !~carry.indexOf(item[key])) carry.push(item[key]);
+					return carry;
+				}, []);
 			}
 		},
 		computed: {
@@ -415,7 +502,16 @@
 				return []
 			},
 			filteredSkills: function(){
-				return this.skills[this.modal.site.value]
+				if(this.modal.site != "" && this.modal.site != null)
+					return this.skills[this.modal.site.value]
+
+				return []
+			},
+			filteredSites: function(){
+				var destArray = this.getUniqueValuesOfKey(this.form.activities, 'site');
+				var sites = this.sites
+				var newArray = _.remove(sites, destArray)
+				console.log(newArray)
 			}
 		},
 		watch: {

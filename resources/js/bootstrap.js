@@ -6,6 +6,7 @@ import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'vue-loading-overlay/dist/vue-loading.css';
 import {ServerTable, ClientTable, Event} from 'vue-tables-2';
+import VeeValidate from 'vee-validate';
 
 window.Vue = Vue
 
@@ -13,6 +14,11 @@ window.Vue = Vue
 Vue.use(BootstrapVue)
 Vue.use(ServerTable);
 Vue.use(Loading)
+Vue.use(VeeValidate, {
+	inject: true,
+	fieldsBagName: 'veeFields',
+	errorBagName: 'veeErrors'
+});
 
 Vue.component('loading', Loading)
 /**
