@@ -4197,6 +4197,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -4224,6 +4225,9 @@ __webpack_require__.r(__webpack_exports__);
       counties: [],
       facilities: [],
       subcounties: [],
+      editIndex: null,
+      editModal: false,
+      editData: {},
       form: new _core_Form__WEBPACK_IMPORTED_MODULE_3__["default"]({
         activities: [],
         facility: '',
@@ -4393,11 +4397,15 @@ __webpack_require__.r(__webpack_exports__);
 
           var data = {};
 
-          _this11.form.activities.push(data);
-
           _.forOwn(_this11.modal, function (value, key) {
             data[key] = value;
           });
+
+          if (!_this11.editModal) {
+            _this11.form.activities.push(data);
+          } else {
+            _this11.form.activities.splice(_this11.editIndex, 1, data);
+          }
 
           _this11.$nextTick(function () {
             _this11.$refs['modal-add-activity'].hide();
@@ -4415,6 +4423,9 @@ __webpack_require__.r(__webpack_exports__);
           _this12.modal[key] = "";
         }
       });
+
+      this.editIndex = null;
+      this.editModal = false;
     },
     validateState: function validateState(ref) {
       if (this.veeFields[ref] && (this.veeFields[ref].dirty || this.veeFields[ref].validated)) {
@@ -4444,7 +4455,9 @@ __webpack_require__.r(__webpack_exports__);
       }, []);
     },
     openEditModal: function openEditModal(index) {
+      this.editIndex = index;
       this.modal = this.form.activities[index];
+      this.editModal = true;
       this.$refs['modal-add-activity'].show();
     },
     removeRow: function removeRow(index) {
@@ -90153,7 +90166,14 @@ var render = function() {
                             [
                               _c(
                                 "b-dropdown-item-button",
-                                { attrs: { size: "sm" } },
+                                {
+                                  attrs: { size: "sm" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.openEditModal(index)
+                                    }
+                                  }
+                                },
                                 [_vm._v("Edit")]
                               ),
                               _vm._v(" "),
@@ -90524,7 +90544,9 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("template", { slot: "modal-ok" }, [
-            _vm._v("\n\t\t\tAdd Row\n\t\t")
+            !_vm.editModal
+              ? _c("span", [_vm._v("Add Row")])
+              : _c("span", [_vm._v("Edit Row")])
           ])
         ],
         2

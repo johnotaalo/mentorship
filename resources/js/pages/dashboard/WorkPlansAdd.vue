@@ -169,7 +169,7 @@
 							</b-button-group> -->
 
 							<b-dropdown id="dropdown-1" text="Actions" class="m-md-2" size="sm" variant="primary">
-								<b-dropdown-item-button size = 'sm' >Edit</b-dropdown-item-button>
+								<b-dropdown-item-button size = 'sm' @click="openEditModal(index)">Edit</b-dropdown-item-button>
 								<b-dropdown-item-button size = 'sm' @click="removeRow(index)">Remove</b-dropdown-item-button>
 							</b-dropdown> 
 						</td>
@@ -264,7 +264,8 @@
 			</div>
 
 			<template slot="modal-ok">
-				Add Row
+				<span v-if="!editModal">Add Row</span>
+				<span v-else>Edit Row</span>
 			</template>
 		</b-modal>
 	</div>
@@ -297,6 +298,9 @@
 				counties: [],
 				facilities: [],
 				subcounties: [],
+				editIndex: null,
+				editModal: false,
+				editData: {},
 				form: new Form({
 					activities: [],
 					facility: '',
@@ -457,10 +461,15 @@
 					}else{
 						this.$validator.reset();
 						var data = {};
-						this.form.activities.push(data)
 						_.forOwn(this.modal, (value, key) => {
 							data[key] = value
 						})
+
+						if(!this.editModal){
+							this.form.activities.push(data)
+						}else{
+							this.form.activities.splice(this.editIndex, 1, data)
+						}
 
 						this.$nextTick(() => {
 							this.$refs['modal-add-activity'].hide()
@@ -478,6 +487,9 @@
 						this.modal[key] = ""
 					}
 				})
+
+				this.editIndex = null
+				this.editModal = false
 			},
 			validateState(ref) {
 				if (this.veeFields[ref] && (this.veeFields[ref].dirty || this.veeFields[ref].validated)) {
@@ -505,7 +517,9 @@
 				}, []);
 			},
 			openEditModal(index){
+				this.editIndex = index
 				this.modal = this.form.activities[index]
+				this.editModal = true
 				this.$refs['modal-add-activity'].show()
 			},
 			removeRow(index){
