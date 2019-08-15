@@ -169,8 +169,8 @@
 							</b-button-group> -->
 
 							<b-dropdown id="dropdown-1" text="Actions" class="m-md-2" size="sm" variant="primary">
-								<b-dropdown-item-button size = 'sm'>Edit</b-dropdown-item-button>
-								<b-dropdown-item-button size = 'sm'>Remove</b-dropdown-item-button>
+								<b-dropdown-item-button size = 'sm' >Edit</b-dropdown-item-button>
+								<b-dropdown-item-button size = 'sm' @click="removeRow(index)">Remove</b-dropdown-item-button>
 							</b-dropdown> 
 						</td>
 					</tr>
@@ -503,6 +503,27 @@
 					if(item[key] && !~carry.indexOf(item[key])) carry.push(item[key]);
 					return carry;
 				}, []);
+			},
+			openEditModal(index){
+				this.modal = this.form.activities[index]
+				this.$refs['modal-add-activity'].show()
+			},
+			removeRow(index){
+				this.$swal({
+					title: "Delete Row?",
+					text: "This action cannot be undone",
+					icon: "warning",
+					buttons: true,
+					dangerMode: true,
+				})
+				.then((willDelete) => {
+					if (willDelete) {
+						this.proceedDelete(index)
+					}
+				});
+			},
+			proceedDelete(index){
+				this.form.activities.splice(index, 1);
 			}
 		},
 		computed: {
