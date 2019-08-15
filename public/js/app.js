@@ -3775,6 +3775,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
@@ -3923,6 +3925,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_MenteeComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/MenteeComponent */ "./resources/js/components/MenteeComponent.vue");
 /* harmony import */ var _mixins_rowForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../mixins/rowForm */ "./resources/js/mixins/rowForm.js");
 /* harmony import */ var _core_Form__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/Form */ "./resources/js/core/Form.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -88791,10 +88808,7 @@ var render = function() {
                       attrs: { to: { name: "dashboard.workplans.add" } }
                     },
                     [
-                      _c("i", {
-                        staticClass: "align-middle",
-                        attrs: { "data-feather": "plus" }
-                      }),
+                      _c("i", { staticClass: "fa fa-plus align-middle" }),
                       _vm._v(" "),
                       _c("span", { staticClass: "align-middle" }, [
                         _vm._v("Add Workplan")
@@ -88816,10 +88830,7 @@ var render = function() {
                       attrs: { to: { name: "dashboard.workplans" } }
                     },
                     [
-                      _c("i", {
-                        staticClass: "align-middle",
-                        attrs: { "data-feather": "file" }
-                      }),
+                      _c("i", { staticClass: "fa fa-file align-middle" }),
                       _vm._v(" "),
                       _c("span", { staticClass: "align-middle" }, [
                         _vm._v("View Workplans")
@@ -88847,7 +88858,7 @@ var render = function() {
                     }
                   }
                 },
-                [_vm._v("Logout")]
+                [_c("i", { staticClass: "fa fa-lock" }), _vm._v(" Logout")]
               )
             ])
           : _vm._e()
@@ -88889,10 +88900,7 @@ var staticRenderFns = [
         attrs: { href: "#workplans", "data-toggle": "collapse" }
       },
       [
-        _c("i", {
-          staticClass: "align-middle",
-          attrs: { "data-feather": "book" }
-        }),
+        _c("i", { staticClass: "fa fa-book align-middle" }),
         _vm._v(" "),
         _c("span", { staticClass: "align-middle" }, [_vm._v("Workplans")])
       ]
@@ -89318,7 +89326,26 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_c("b-card")], 1)
+  return _c(
+    "div",
+    [
+      _c(
+        "b-card",
+        [
+          _c("center", [
+            _c("h2", [
+              _vm._v(
+                "WELCOME HOME! USE THE MENU ON THE LEFT TO BROWSER FURTHER"
+              )
+            ])
+          ]),
+          _vm._v(";\n\t")
+        ],
+        1
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -89474,7 +89501,11 @@ var render = function() {
         { staticClass: "card-body" },
         [
           _c("center", [
-            _c("h4", [_c("strong", [_vm._v("ETAT + TOT MENTORSHIP WORKPLAN")])])
+            _c("h4", [
+              _c("strong", [_vm._v("ETAT + TOT MENTORSHIP WORKPLAN")])
+            ]),
+            _vm._v(" "),
+            _c("h5", [_vm._v("Please note that all fields are mandatory")])
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "row" }, [
@@ -90081,7 +90112,40 @@ var render = function() {
                           }),
                           0
                         )
-                      ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "td",
+                        [
+                          _c(
+                            "b-dropdown",
+                            {
+                              staticClass: "m-md-2",
+                              attrs: {
+                                id: "dropdown-1",
+                                text: "Actions",
+                                size: "sm",
+                                variant: "primary"
+                              }
+                            },
+                            [
+                              _c(
+                                "b-dropdown-item-button",
+                                { attrs: { size: "sm" } },
+                                [_vm._v("Edit")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "b-dropdown-item-button",
+                                { attrs: { size: "sm" } },
+                                [_vm._v("Remove")]
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
                     ])
                   }),
                   0
@@ -90090,7 +90154,7 @@ var render = function() {
                   _c("tr", [
                     _c(
                       "td",
-                      { attrs: { colspan: "6" } },
+                      { attrs: { colspan: "7" } },
                       [_c("center", [_vm._v("Click Add Row to add activity")])],
                       1
                     )
@@ -90101,14 +90165,11 @@ var render = function() {
           _c(
             "b-button",
             {
-              attrs: { size: "sm", variant: "primary" },
+              attrs: { variant: "primary" },
               on: { click: _vm.showAddActivityModal }
             },
             [
-              _c("i", {
-                staticClass: "align-left",
-                attrs: { "data-feather": "plus" }
-              }),
+              _c("i", { staticClass: "align-left fa fa-plus" }),
               _vm._v(" Add Row")
             ]
           ),
@@ -90118,14 +90179,11 @@ var render = function() {
                 "b-button",
                 {
                   staticClass: "float-right",
-                  attrs: { size: "sm", variant: "primary" },
+                  attrs: { variant: "success" },
                   on: { click: _vm.addData }
                 },
                 [
-                  _c("i", {
-                    staticClass: "align-left",
-                    attrs: { "data-feather": "save" }
-                  }),
+                  _c("i", { staticClass: "fa fa-save align-left" }),
                   _vm._v(" Save Data")
                 ]
               )
@@ -90465,7 +90523,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Expected outcome of the mentorship session/s")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Resources needed")])
+        _c("th", [_vm._v("Resources needed")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Actions")])
       ])
     ])
   }

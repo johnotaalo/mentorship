@@ -1,6 +1,8 @@
 <template>
 	<div>
-		<b-card></b-card>
+		<b-card>
+			<center><h2>WELCOME HOME! USE THE MENU ON THE LEFT TO BROWSER FURTHER</h2></center>;
+		</b-card>
 	</div>
 </template>
 

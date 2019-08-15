@@ -22,16 +22,16 @@
 
 					<li class="sidebar-item">
 						<a href="#workplans" data-toggle="collapse" class="sidebar-link collapsed">
-							<i class="align-middle" data-feather="book"></i> <span class="align-middle">Workplans</span>
+							<i class="fa fa-book align-middle"></i> <span class="align-middle">Workplans</span>
 						</a>
 						<ul id="workplans" class="sidebar-dropdown list-unstyled collapse">
-							<li class="sidebar-item"><router-link class="sidebar-link" :to="{ name: 'dashboard.workplans.add' }"><i class="align-middle" data-feather="plus"></i> <span class="align-middle">Add Workplan</span></router-link></li>
-							<li class="sidebar-item"><router-link class="sidebar-link" :to="{ name: 'dashboard.workplans' }"><i class="align-middle" data-feather="file"></i> <span class="align-middle">View Workplans</span></router-link></li>
+							<li class="sidebar-item"><router-link class="sidebar-link" :to="{ name: 'dashboard.workplans.add' }"><i class="fa fa-plus align-middle"></i> <span class="align-middle">Add Workplan</span></router-link></li>
+							<li class="sidebar-item"><router-link class="sidebar-link" :to="{ name: 'dashboard.workplans' }"><i class="fa fa-file align-middle"></i> <span class="align-middle">View Workplans</span></router-link></li>
 						</ul>
 					</li>
 
 					 <li class="sidebar-item" v-if="$auth.check()">
-						<a class="sidebar-link" href="#" @click.prevent="logout()">Logout</a>
+						<a class="sidebar-link" href="#" @click.prevent="logout()"><i class="fa fa-lock"></i>&nbsp;Logout</a>
 					</li>
 
 					<!-- <li class="sidebar-item">

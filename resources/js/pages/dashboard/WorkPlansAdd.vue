@@ -2,7 +2,10 @@
 	<div class="card">
 		<div class="card-body">
 			<!-- <b-select :options="filteredSites"></b-select> -->
-			<center><h4><strong>ETAT + TOT MENTORSHIP WORKPLAN</strong></h4></center>
+			<center>
+				<h4><strong>ETAT + TOT MENTORSHIP WORKPLAN</strong></h4>
+				<h5>Please note that all fields are mandatory</h5>
+			</center>
 			<div class="row">
 				<div class="col-md">
 					<strong>County Name: </strong>
@@ -128,6 +131,7 @@
 						<th>Skills to be mentored (list of skills)</th>
 						<th>Expected outcome of the mentorship session/s</th>
 						<th>Resources needed</th>
+						<th>Actions</th>
 					</tr>
 				</thead>
 				<tbody v-if = "form.activities.length">
@@ -158,18 +162,29 @@
 								<li v-for="item in row.resources">{{ item.label }}</li>
 							</ol>
 						</td>
+						<td>
+							<!-- <b-button-group size="sm">
+								<b-button><i class="fa fa-minus"></i>&nbsp;Remove</b-button>
+								<b-button><i class="fa fa-edit"></i>&nbsp;Edit</b-button>
+							</b-button-group> -->
+
+							<b-dropdown id="dropdown-1" text="Actions" class="m-md-2" size="sm" variant="primary">
+								<b-dropdown-item-button size = 'sm'>Edit</b-dropdown-item-button>
+								<b-dropdown-item-button size = 'sm'>Remove</b-dropdown-item-button>
+							</b-dropdown> 
+						</td>
 					</tr>
 				</tbody>
 				<tbody v-else>
 					<tr>
-						<td colspan="6"><center>Click Add Row to add activity</center></td>
+						<td colspan="7"><center>Click Add Row to add activity</center></td>
 					</tr>
 				</tbody>
 			</table>
 
-			<b-button size="sm" variant = "primary" @click="showAddActivityModal"><i class="align-left" data-feather="plus"></i>&nbsp;Add Row</b-button>
+			<b-button variant = "primary" @click="showAddActivityModal"><i class="align-left fa fa-plus"></i>&nbsp;Add Row</b-button>
 			<!-- -->
-			<b-button v-if="form.activities.length" size="sm" variant = "primary" class="float-right" @click="addData"><i class="align-left" data-feather="save"></i>&nbsp;Save Data</b-button>
+			<b-button v-if="form.activities.length" variant = "success" class="float-right" @click="addData"><i class="fa fa-save align-left"></i>&nbsp;Save Data</b-button>
 		</div>
 
 		<b-modal ref="modal-add-activity" title="Add Activity" @ok="manageModalData" no-close-on-backdrop>
