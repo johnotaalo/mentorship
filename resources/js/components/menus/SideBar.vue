@@ -13,9 +13,9 @@
 					<li class="sidebar-header">
 						Main
 					</li>
-					<!-- <li class="sidebar-item">
-						<router-link class="sidebar-link" :to="{ name: 'dashboard.index' }"><i class="align-middle" data-feather="pie-chart"></i> <span class="align-middle">Dashboard</span></router-link>
-					</li> -->
+					<li class="sidebar-item">
+						<router-link class="sidebar-link" :to="{ name: 'dashboard.index' }"><i class="fa fa-home align-middle"></i> <span class="align-middle">Home</span></router-link>
+					</li>
 					<!-- <li class="sidebar-item">
 						<router-link class="sidebar-link" :to="{ name: 'dashboard.hcwlist' }"><i class="align-middle" data-feather="users"></i> <span class="align-middle">Mentor List</span></router-link>
 					</li> -->
@@ -31,6 +31,7 @@
 					</li>
 
 					 <li class="sidebar-item" v-if="$auth.check()">
+					 	<!-- <i class="align-middle" data-feather="log-out"></i>-->
 						<a class="sidebar-link" href="#" @click.prevent="logout()"><i class="fa fa-lock"></i>&nbsp;Logout</a>
 					</li>
 
@@ -39,7 +40,7 @@
 					</li> -->
 				</ul>
 
-				<div class="sidebar-bottom d-none d-lg-block">
+				<!-- div class="sidebar-bottom d-none d-lg-block">
 					<div class="media">
 						<img class="rounded-circle mr-3" src="/dashboard/img/empty-profile.svg" alt="Chris Wood" width="40" height="40">
 						<div class="media-body">
@@ -49,7 +50,7 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 
 			</div>
 		</nav>

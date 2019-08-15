@@ -107,11 +107,38 @@ class WorkplanController extends Controller
         $allWorkplansCount = $queryBuilder->count();
         $queryBuilder->limit($limit)->skip($limit * ($page - 1));
 
+        $queryBuilder->orderBy('created_at', 'DESC');
         $workplans = $queryBuilder->get();
 
         return [
             'data'  =>  $workplans,
             'count' =>  $allWorkplansCount
         ];
+    }
+
+    function getWorkplansByMonth(Request $request){
+        $sql = "SELECT m.month, COUNT(w.id) as workplans
+                FROM
+                (
+                    SELECT 1 AS MONTH_NUMBER, 'January' AS MONTH
+                    UNION SELECT  2 AS MONTH_NUMBER, 'February' AS MONTH
+                    UNION SELECT  3 AS MONTH_NUMBER, 'March' AS MONTH
+                    UNION SELECT  4 AS MONTH_NUMBER, 'April' AS MONTH
+                    UNION SELECT  5 AS MONTH_NUMBER, 'May' AS MONTH
+                    UNION SELECT  6 AS MONTH_NUMBER, 'June' AS MONTH
+                    UNION SELECT  7 AS MONTH_NUMBER, 'July' AS MONTH
+                    UNION SELECT  8 AS MONTH_NUMBER, 'August' AS MONTH
+                    UNION SELECT  9 AS MONTH_NUMBER, 'September' AS MONTH
+                    UNION SELECT  10 AS MONTH_NUMBER, 'October' AS MONTH
+                    UNION SELECT  11 AS MONTH_NUMBER, 'November' AS MONTH
+                    UNION SELECT  12 AS MONTH_NUMBER, 'December' AS MONTH
+                ) as m
+                LEFT JOIN workplans w ON m.month = w.period_month AND w.period_year = {$request->year}
+                GROUP BY m.month
+                ORDER BY m.MONTH_NUMBER ASC";
+
+        $data = \DB::select($sql);
+
+        return $data;
     }
 }

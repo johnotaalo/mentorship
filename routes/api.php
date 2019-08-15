@@ -41,4 +41,5 @@ Route::prefix('data')->group(function(){
 
 	Route::post('workplan', 'API\WorkplanController@add');
 	Route::get('/workplans', 'API\WorkplanController@all');
+	Route::get('/workplans/yearly/{year}', 'API\WorkplanController@getWorkplansByMonth');
 });

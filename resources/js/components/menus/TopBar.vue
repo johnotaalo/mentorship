@@ -11,13 +11,14 @@
 							<i class="align-middle" data-feather="settings"></i>
 						</a>
 
-						<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-toggle="dropdown">
-							<img src="/dashboard/img/empty-profile.svg" class="avatar img-fluid rounded-circle mr-1" alt="Sample Admin" /> <span class="text-dark">{{ $auth.user().name }}</span>
+						<a class="nav-link d-none align-middle d-sm-inline-block" href="#">
+							<!-- <img src="/dashboard/img/empty-profile.svg" class="avatar img-fluid rounded-circle mr-1" alt="Sample Admin" />  -->
+							<i class="fa fa-user-md text-success"></i>&nbsp;&nbsp;<span class="text-dark">{{ $auth.user().name }}</span>
 						</a>
-						<div class="dropdown-menu dropdown-menu-right">
+						<!-- <div class="dropdown-menu dropdown-menu-right">
 							<a class="dropdown-item" href="pages-profile.html"><i class="align-middle mr-1" data-feather="user"></i> Profile</a>
 							<a class="dropdown-item" href="#">Sign out</a>
-						</div>
+						</div> -->
 					</li>
 				</ul>
 			</div>

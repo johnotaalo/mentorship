@@ -506,7 +506,21 @@
 
 					em.form.post('/data/workplan')
 					.then(res => {
-						em.$router.push({ name: 'dashboard.workplans' });
+						this.$swal({
+							title: "Success!",
+							text: "Successfully added workplan",
+							icon: "success",
+						}).then(() => {
+							em.$router.push({ name: 'dashboard.workplans' });
+						})
+						
+					})
+					.catch((error) => {
+						this.$swal({
+							title: "Error!",
+							text: "There was an error while adding workplan!",
+							icon: "error",
+						})
 					})
 				})
 			},

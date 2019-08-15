@@ -8,6 +8,26 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 import {ServerTable, ClientTable, Event} from 'vue-tables-2';
 import VeeValidate from 'vee-validate';
 import VueSwal from 'vue-swal'
+import VueHighcharts from 'vue-highcharts';
+import Highcharts from 'highcharts';
+
+// load these modules as your need
+import loadStock from 'highcharts/modules/stock.js';
+import loadMap from 'highcharts/modules/map.js';
+import loadGantt from 'highcharts/modules/gantt.js';
+import loadDrilldown from 'highcharts/modules/drilldown.js';
+import loadTreemap from 'highcharts/modules/treemap.js'
+// some charts like solid gauge require `highcharts-more.js`, you can find it in official document.
+import loadHighchartsMore from 'highcharts/highcharts-more.js';
+import loadSolidGauge from 'highcharts/modules/solid-gauge.js';
+
+loadStock(Highcharts);
+loadMap(Highcharts);
+loadGantt(Highcharts);
+loadDrilldown(Highcharts);
+loadHighchartsMore(Highcharts);
+loadSolidGauge(Highcharts);
+loadTreemap(Highcharts)
 
 window.Vue = Vue
 
@@ -21,6 +41,7 @@ Vue.use(VeeValidate, {
 	errorBagName: 'veeErrors'
 });
 Vue.use(VueSwal)
+Vue.use(VueHighcharts, { Highcharts });
 
 Vue.component('loading', Loading)
 /**

@@ -4,18 +4,13 @@
 			<div class="row">
 				<div class="col-md-3">
 					<div class="form-group">
-						<label>Select a County</label>
-						<v-select :options="data.counties" v-model="selectedCounty"></v-select>
+						<label>Select Year</label>
+						<v-select :options="['2018', '2019']" v-model="selectedYear"></v-select>
 					</div>
 				</div>
 			</div>
-			<div class="row">
+			<!-- <div class="row">
 				<div class="col-md">
-					<!-- <b-table striped bordered :items="items" :fields="fields" small>
-						<template slot="actions" slot-scope="data">
-							<b-button size="sm" variant="warning" @click="viewWorkplan(data.item.id)">View</b-button>
-						</template>
-					</b-table> -->
 					<v-server-table url="/data/workplans" :columns="fields" :options="options">
 						<template slot="name" slot-scope="data">
 							{{ data.row.mentor.name }}
@@ -34,8 +29,14 @@
 						</template>
 					</v-server-table>
 				</div>
-			</div>
+			</div> -->
 		</b-card>
+
+		<div class="row">
+			<div class="col-md">
+				<Highcharts :options="monthOptions" style="height: 500px;"></Highcharts>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -44,6 +45,7 @@
 		data(){
 			return {
 				selectedCounty: { value: "", label: "All Counties" },
+				selectedYear: '2019',
 				data: {
 					counties: [],
 					workplans: []
@@ -54,11 +56,13 @@
 					{ id: 2, first_name: "Sample", last_name: "Mentor 2", county: "Kakamega", cycle: "June 2019" },
 					{ id: 3, first_name: "Sample", last_name: "Mentor 3", county: "Kisumu", cycle: "November 2018" }
 				],
+				workplans: [],
 				options: {}
 			}
 		},
 		created(){
-			this.getCounties()
+			// this.getCounties()
+			this.getWorkplans(this.selectedYear)
 		},
 		methods: {
 			getCounties: function(){
@@ -75,10 +79,10 @@
 				})
 			},
 
-			getWorkplans(){
-				axios.get('/data/workplans')
+			getWorkplans(year){
+				axios.get(`/data/workplans/yearly/${year}`)
 				.then(res => {
-					this.items
+					this.workplans = res.data
 				});
 			},
 			viewWorkplan: function(id){
@@ -92,6 +96,41 @@
 				}else{
 
 				}
+			},
+			monthOptions: function(){
+				var data = [];
+				data = _.map(this.workplans, (workplan, index) => {
+					return {
+						name: workplan.month,
+						value: workplan.workplans,
+						colorValue: index + 1
+					};
+				})
+				return {
+					colorAxis: {
+						minColor: '#FFFFFF',
+						maxColor: '#D50000'
+					},
+					series: [{
+						type: 'treemap',
+						layoutAlgorithm: 'squarified',
+						data: data,
+						events: {
+							click: (event) => {
+								console.log("clicked")
+								console.log(event.point.name + " => " + event.point.value)
+							}
+						}
+					}],
+					title: {
+						text: 'Monthly Distribution for ' + this.selectedYear
+					}
+				}
+			}
+		},
+		watch: {
+			selectedYear: function(val){
+				this.getWorkplans(val)
 			}
 		}
 	}
