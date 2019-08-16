@@ -1,9 +1,23 @@
 <template>
 	<div class="card">
 		<div class="card-body">
+
+			<div class="row">
+				<div class="col-md-3">
+					<b-button variant="primary" size="sm" @click="$router.go(-1)"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Back to List</b-button>
+				</div>
+				<div class="col-md-3 offset-6">
+					
+				</div>
+			</div>
 			<p>
 				<strong>County Name: </strong>
-				<span>{{ mentor.county }}</span>
+				<span>{{ workplan.county.county }}</span>
+			</p>
+
+			<p>
+				<strong>Sub County Name: </strong>
+				<span>{{ workplan.subcounty.subcounty }}</span>
 			</p>
 
 			<center><h4>ETAT + TOT MENTORSHIP WORKPLAN</h4></center>
@@ -12,25 +26,25 @@
 				<tr>
 					<td>
 						<b>Mentor Name: </b>
-						<span>{{ mentor.first_name }} {{ mentor.last_name }}</span>
+						<span>{{ workplan.mentor.name }}</span>
 					</td>
 					<td>
 						<b>Mentorship Period</b>
-						{{ mentor.cycle }}
+						{{ workplan.period_month }} {{ workplan.period_year }}
 					</td>
 				</tr>
 				<tr>
-					<td><b>Health Facility Name (Mentorship Venue):</b> {{ mentor.facility_name }}</td>
+					<td><b>Health Facility Name (Mentorship Venue):</b> {{ workplan.venue.facility_name }}</td>
 					<td>
-						<b>Mentor Workstation: </b>{{ mentor.facility_name }}
+						<b>Mentor Workstation: </b>{{ workplan.workstation.facility_name }}
 					</td>
 				</tr>
 				<tr>
 					<td>
-						<b>Mentor Contact Number: </b>{{ mentor.contact }}
+						<b>Mentor Contact Number: </b>{{ workplan.mentor.phone }}
 					</td>
 					<td>
-						<b>Mentor Email Address: </b>{{ mentor.email }}
+						<b>Mentor Email Address: </b>{{ workplan.mentor.email }}
 					</td>
 				</tr>
 			</table>
@@ -39,74 +53,41 @@
 				<thead>
 					<tr>
 						<th>Site / Service Delivery Area (Indicate)</th>
-						<th>Mentee (Indicate cadre & number of pax)</th>
 						<th># of sections planned</th>
 						<th>Cases to be reviewed (list of cases based on audit)</th>
 						<th>Skills to be mentored (list of skills)</th>
-						<th>Resources needed</th>
 						<th>Expected outcome of the mentorship session/s</th>
+						<th>Resources needed</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr v-for="(row, index) in form.activities" :key="index">
+					<tr v-for="(row, index) in workplan.sites" :key="index">
 						<td>
-							{{ row.site }}
-						</td>
-						<td>
-							<p v-for="item in row.mentees">{{ item.mentee_no }} - {{ item.mentee_cadre }}</p>
+							{{ row.site.site }}
 						</td>
 						<td>
 							{{ row.sessions }} sessions
 						</td>
 						<td>
 							<ol>
-								<li v-for="item in row.cases">{{ item }}</li>
+								<li v-for="item in row.cases">{{ item.case_data.case }}</li>
 							</ol>
 						</td>
 						<td>
 							<ol>
-								<li v-for="item in row.skills">{{ item }}</li>
+								<li v-for="item in row.skills">{{ item.skill_data.topic }}</li>
 							</ol>
 						</td>
 						<td>
 							<ol>
-								<li v-for="item in row.resources">{{ item }}</li>
+								<li v-for="item in row.skills">{{ item.skill_data.outcomes_data.outcome }}</li>
 							</ol>
 						</td>
 						<td>
 							<ol>
-								<li v-for="item in row.expectedOutcomes">{{ item.outcome }}</li>
+								<li v-for="item in row.resources">{{ item.resource_data.resource }}</li>
 							</ol>
 						</td>
-						<!-- <td>
-							
-							<select name = "sites[]">
-								<option>Labor Ward</option>
-								<option>Paedriatic Ward</option>
-								<option>MCH</option>
-								<option>New Born Unit</option>
-							</select>
-						</td>
-						<td>
-							<b-form-input placeholder="xx-Clinical Officers"></b-form-input>
-						</td>
-						<td>
-							<b-input-group append="Sessions" class="mb-8 mr-sm-8 mb-sm-0">
-								<b-form-input></b-form-input>
-							</b-input-group>
-						</td>
-						<td>
-							<b-select :options="cases"></b-select>
-						</td>
-						<td>
-							<b-select :options="skills"></b-select>
-						</td>
-						<td>
-							<b-select :options="resources"></b-select>
-						</td>
-						<td>
-							<b-form-input></b-form-input>
-						</td> -->
 					</tr>
 				</tbody>
 			</table>
@@ -120,6 +101,7 @@
 			return {
 				id: this.$route.params.id,
 				mentor: {},
+				workplan: {},
 				form: {
 					activities: [
 					{ site: "Labor Ward", mentees: [{ mentee_no: 2, mentee_cadre: "Nurses" }, { mentee_no: 8, mentee_cadre: "Clinical Officers" }], sessions: 10, skills: ["Oxygen Administration for Neonatals", "Triage for Sick Children"], cases: ["Asphyria", "Meconium", "Dehydration"], resources: ["Pulse Oximeters", "Thermometers"], expectedOutcomes: [{outcome: "Sample Outcome 1"}, {outcome: "Sample Outcome 2"}] }
@@ -133,11 +115,20 @@
 			}
 		},
 		created(){
-			this.getData()
+			this.getMentorData()
 		},
 		methods: {
 			getData(){
 				this.mentor = _.find(this.items, ['id', parseInt(this.id)])
+			},
+			getMentorData(){
+				axios.get(`data/workplan/${this.id}`)
+				.then((res) => {
+					this.workplan = res.data
+				});
+			},
+			backToList(){
+				return;
 			}
 		}
 	}

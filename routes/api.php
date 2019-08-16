@@ -40,6 +40,7 @@ Route::prefix('data')->group(function(){
 	Route::get('cases', 'API\MentorsController@getCases');
 
 	Route::post('workplan', 'API\WorkplanController@add');
-	Route::get('/workplans', 'API\WorkplanController@all');
-	Route::get('/workplans/yearly/{year}', 'API\WorkplanController@getWorkplansByMonth');
+	Route::get('/workplan/{id}', 'API\WorkplanController@getWorkplan');
+	Route::get('/workplans/{month}/{year}', 'API\WorkplanController@all');
+	Route::get('/all-workplans/yearly/{year}', 'API\WorkplanController@getWorkplansByMonth');
 });

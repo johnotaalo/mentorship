@@ -1,40 +1,46 @@
 <template>
 	<div>
-		<b-card>
-			<div class="row">
-				<div class="col-md-3">
-					<div class="form-group">
-						<label>Select Year</label>
-						<v-select :options="['2018', '2019']" v-model="selectedYear"></v-select>
-					</div>
-				</div>
-			</div>
-			<!-- <div class="row">
-				<div class="col-md">
-					<v-server-table url="/data/workplans" :columns="fields" :options="options">
-						<template slot="name" slot-scope="data">
-							{{ data.row.mentor.name }}
-						</template>
-
-						<template slot='county' slot-scope="data">
-							{{ data.row.county.county }}
-						</template>
-
-						<template slot='facility' slot-scope="data">
-							{{ data.row.venue.facility_name }}
-						</template>
-
-						<template slot="cycle" slot-scope="data">
-							{{ data.row.period_month }} {{ data.row.period_year }}
-						</template>
-					</v-server-table>
-				</div>
-			</div> -->
-		</b-card>
-
 		<div class="row">
 			<div class="col-md">
-				<Highcharts :options="monthOptions" style="height: 500px;"></Highcharts>
+				<div class="card">
+					<div class="card-body">
+						<div v-if="selectedMonth != ''">
+							<b-button variant = "primary" @click="backToMapping" size="sm"><i class="fa fa-arrow-left"></i>&nbsp;Back to Tree Map</b-button>
+							<v-server-table :url="`/data/workplans/${selectedMonth}/${selectedYear}`" :columns="fields" :options="options">
+								<template slot="name" slot-scope="data">
+									{{ data.row.mentor.name }}
+								</template>
+
+								<template slot='county' slot-scope="data">
+									{{ data.row.county.county }}
+								</template>
+
+								<template slot='facility' slot-scope="data">
+									{{ data.row.venue.facility_name }}
+								</template>
+
+								<template slot="cycle" slot-scope="data">
+									{{ data.row.period_month }} {{ data.row.period_year }}
+								</template>
+
+								<template slot-scope = "data" slot="actions">
+									<router-link class = "btn btn-sm btn-primary" :to="{ name: 'dashboard.workplan.view', params: { id: data.row.id } }"><i class="fa fa-eye align-middle"></i> <span class="align-middle">View Workplan</span></router-link>
+								</template>
+							</v-server-table>
+						</div>
+						<div v-else>
+						<div class="row">
+							<div class="col-md-3 offset-9">
+								<div class="form-group">
+									<label>Select Year</label>
+									<v-select :options="['2019', '2018']" v-model="selectedYear"></v-select>
+								</div>
+							</div>
+						</div>
+						<Highcharts :options="monthOptions" style="height: 500px;"></Highcharts>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -46,6 +52,7 @@
 			return {
 				selectedCounty: { value: "", label: "All Counties" },
 				selectedYear: '2019',
+				selectedMonth: '',
 				data: {
 					counties: [],
 					workplans: []
@@ -80,13 +87,16 @@
 			},
 
 			getWorkplans(year){
-				axios.get(`/data/workplans/yearly/${year}`)
+				axios.get(`/data/all-workplans/yearly/${year}`)
 				.then(res => {
 					this.workplans = res.data
 				});
 			},
 			viewWorkplan: function(id){
 				this.$router.push({ name: 'dashboard.workplans.view', params: {id: id} })
+			},
+			backToMapping: function(){
+				this.selectedMonth = ""
 			}
 		},
 		computed: {
@@ -117,8 +127,7 @@
 						data: data,
 						events: {
 							click: (event) => {
-								console.log("clicked")
-								console.log(event.point.name + " => " + event.point.value)
+								this.selectedMonth = event.point.name
 							}
 						}
 					}],

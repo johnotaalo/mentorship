@@ -79,6 +79,8 @@ class WorkplanController extends Controller
         ];
 
         $queryBuilder = \App\Workplan::select('*');
+        $queryBuilder->where('period_month', $request->month);
+        $queryBuilder->where('period_year', $request->year);
         $queryBuilder->with('mentor', 'subcounty', 'venue', 'workstation');
         if($q != ""){
             $queryBuilder->whereHas('mentor', function ($query) use ($q){
@@ -114,6 +116,12 @@ class WorkplanController extends Controller
             'data'  =>  $workplans,
             'count' =>  $allWorkplansCount
         ];
+    }
+
+    function getWorkplan(Request $request){
+        $workplan = \App\Workplan::with('mentor', 'subcounty', 'venue', 'workstation', 'sites')->find($request->id);
+
+        return $workplan;
     }
 
     function getWorkplansByMonth(Request $request){

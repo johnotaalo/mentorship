@@ -26,6 +26,10 @@ class Workplan extends Model
     	return $this->belongsTo(\App\Facility::class, "mentor_work_station", "survey_cto_id");
     }
 
+    public function sites(){
+        return $this->hasMany(\App\WorkplanSite::class);
+    }
+
     public function getCountyAttribute(){
     	return \App\Subcounty::where('subcounty_id', $this->subcounty_id)->first()->county;
     }

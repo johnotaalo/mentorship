@@ -44,6 +44,14 @@ let routes = [{
 			auth: true
 		}
 	},{
+		name: 'dashboard.workplan.view',
+		path: '/workplans/:id/view',
+		component: WorkPlansView,
+		meta: {
+			title: 'View Work Plan',
+			auth: true
+		}
+	},{
 		name: 'dashboard.workplans.view',
 		path: '/workplans/view/:id',
 		component: WorkPlansView,

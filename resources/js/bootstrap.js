@@ -34,6 +34,7 @@ window.Vue = Vue
 
 Vue.use(BootstrapVue)
 Vue.use(ServerTable);
+Vue.use(ClientTable);
 Vue.use(Loading)
 Vue.use(VeeValidate, {
 	inject: true,
