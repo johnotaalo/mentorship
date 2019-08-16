@@ -142,7 +142,7 @@ class WorkplanController extends Controller
                     UNION SELECT  12 AS MONTH_NUMBER, 'December' AS MONTH
                 ) as m
                 LEFT JOIN workplans w ON m.month = w.period_month AND w.period_year = {$request->year}
-                GROUP BY m.month
+                GROUP BY m.month, m.MONTH_NUMBER
                 ORDER BY m.MONTH_NUMBER ASC";
 
         $data = \DB::select($sql);
