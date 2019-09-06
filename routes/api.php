@@ -17,6 +17,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::middleware('auth:api', ['except' => ['login', 'refresh']]);
+
 Route::prefix('auth')->group(function(){
 	Route::post('register', 'AuthController@register');
 	Route::post('login', 'AuthController@login');

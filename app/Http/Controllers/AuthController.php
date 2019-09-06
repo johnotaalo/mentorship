@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
+	// $this->middleware('auth:api', ['except' => ['login', 'refresh']]);
 	public function register(Request $request)
 	{
 		$v = Validator::make($request->all(), [

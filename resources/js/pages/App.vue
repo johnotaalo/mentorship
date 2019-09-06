@@ -39,6 +39,9 @@
 	export default {
 		created(){
 			// console.log(this.$route)
+			if(!this.$auth.check()){
+				this.$auth.logout()
+			}
 		},
 		computed: {
 			showMenus: function(){
